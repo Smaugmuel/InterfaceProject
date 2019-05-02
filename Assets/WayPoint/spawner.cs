@@ -24,11 +24,11 @@ public class spawner : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(mousePos);
             RaycastHit[] hits = Physics.RaycastAll(ray, 100f, 9);
 
-            hits = sortHitList(hits);
-
             // If hit
             if (hits.Length > 0)
             {
+                hits = sortHitList(hits);
+
                 for (int i = 0; i < hits.Length; i++)
                 {
                     SpawnWaypoint(hits[i].point);

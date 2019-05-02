@@ -7962,6 +7962,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   waypoint_model: {fileID: 1508128866401026718, guid: 1cc021775ec9fb44bb6788001f7eeb1d,
     type: 3}
+  gc: {fileID: 343655722}
 --- !u!4 &1196030248
 Transform:
   m_ObjectHideFlags: 0
@@ -7974,7 +7975,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1200255683
 GameObject:
