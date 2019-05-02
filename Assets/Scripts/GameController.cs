@@ -7,7 +7,16 @@ public class GameController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        NodeSystem.Test();
+        try
+        {
+            NodeSystem.Test();
+            print("Node System Test: OK");
+        }
+        catch
+        {
+            print("Node System Test: Failed");
+
+        }
     }
 
     // Update is called once per frame
