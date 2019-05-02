@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public class NodeSystem
 {
     static bool _nodesystemDebug = false;
@@ -14,17 +13,33 @@ public class NodeSystem
 
         NodeSystem ns = new NodeSystem();
 
+        //Add two nodes
         ns.AddNode(0.0f, 0.0f, 0.0f);
         ns.AddNode(new NodeSystem.Node(10.0f, 10.0f, 10.0f));
 
+        if (ns.Nodes.Count != 2)
+            throw new System.ArgumentException("1) Size not correct", "NodeSystem.nodes");
+
+        //Add Connection nodes
         ns.AddLine((NodeSystem.Node)ns.Nodes[0], (NodeSystem.Node)ns.Nodes[1]);
+        if (ns.Lines.Count != 1)
+            throw new System.ArgumentException("2) Size not correct", "NodeSystem.lines");
+        if (((Node)ns.Nodes[0]).Connections.Count != 1)
+            throw new System.ArgumentException("3) Size not correct", "NodeSystem.Node[0].Connections.Count");
+        if (((Node)ns.Nodes[1]).Connections.Count != 1)
+            throw new System.ArgumentException("4) Size not correct", "NodeSystem.Node[1].Connections.Count");
 
-
-        MonoBehaviour.print("Nodes: " + ns.Nodes.Count);
-        MonoBehaviour.print("Node1 Pos: " + ((NodeSystem.Node)ns.Nodes[1]).X + ", " + ((NodeSystem.Node)ns.Nodes[1]).Y + ", " + ((NodeSystem.Node)ns.Nodes[1]).Z);
-        MonoBehaviour.print("Line0 Type:" + ((NodeSystem.Line)ns.Lines[0]).Type);
+        //Remove Node 0
         ns.RemoveNode((NodeSystem.Node)(ns.Nodes[0]));
-        MonoBehaviour.print("Lines: " + ns.Lines.Count);
+
+        if (ns.Nodes.Count != 1)
+            throw new System.ArgumentException("5) Size not correct", "NodeSystem.nodes");
+
+        if (ns.Lines.Count != 0)
+            throw new System.ArgumentException("6) Size not correct", "NodeSystem.lines");
+
+        if (((Node)ns.Nodes[0]).Connections.Count != 0)
+            throw new System.ArgumentException("7) Size not correct", "NodeSystem.Node[0].Connections.Count");
 
         _nodesystemDebug = _nodesystemDebug_temp;
     }
@@ -91,7 +106,6 @@ public class NodeSystem
             get { return z; }
         }
     }
-
 
     //===========Line=============
 
