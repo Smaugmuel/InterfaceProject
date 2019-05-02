@@ -168,9 +168,15 @@ public class NodeSystem
 
             //For Each Connection, Remove itself from the 2 connected nodes
             ((Line)nodeConnections[i]).Nodes[0].Connections.Remove(nodeConnections[i]);
+            if (_nodesystemDebug)
+                MonoBehaviour.print("(RemoveNode) check1");
+
             ((Line)nodeConnections[i]).Nodes[1].Connections.Remove(nodeConnections[i]);
+            if (_nodesystemDebug)
+                MonoBehaviour.print("(RemoveNode) check2");
             //Remove the connection from the nodesystem
             lines.Remove(nodeConnections[i]);
+            i--;
         }
 
         //Remove the Node from the node system
