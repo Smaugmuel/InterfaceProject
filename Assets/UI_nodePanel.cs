@@ -8,6 +8,10 @@ public class UI_nodePanel : MonoBehaviour
 
     [SerializeField]
     GameObject nodeItem_Prefab;
+    [SerializeField]
+    GameController gameController;
+
+    float nextUpdate = 0;
 
     public void UpdateUI()
     {
@@ -19,19 +23,33 @@ public class UI_nodePanel : MonoBehaviour
 
         for (int i = 0; i < ns.Nodes.Count; i++)
         {
-            Instantiate(nodeItem_Prefab, transform);
+            GameObject item = Instantiate(nodeItem_Prefab, gameObject.transform);
+            Vector3 itemPos = new Vector3(0.0f, i * -25.0f -15, 0.0f);
+
+            item.transform.localPosition = itemPos;
+
+            item.GetComponent<UI_nodeItem>().ID = i;
+            item.GetComponent<UI_nodeItem>().Node = (NodeSystem.Node)ns.Nodes[i];
         }
+
+        
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        ns = gameController.getNodeSystem();
+        UpdateUI();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        nextUpdate -= Time.deltaTime;
+        if (nextUpdate <= 0)
+        {
+            UpdateUI();
+            nextUpdate = 5;
+        }
     }
 }
