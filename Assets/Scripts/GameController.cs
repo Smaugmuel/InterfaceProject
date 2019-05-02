@@ -28,13 +28,13 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        nextUpdate -= Time.deltaTime;
-        if(nextUpdate < 0)
-        {
-            nextUpdate = 1;
-            ns.AddNode(new NodeSystem.Node(Random.Range(-100,100), Random.Range(-100, 100), Random.Range(-100, 100)));
-            ui_nodePanel.UpdateUI();
-        }
+        //nextUpdate -= Time.deltaTime;
+        //if(nextUpdate < 0)
+        //{
+        //    nextUpdate = 1;
+        //    ns.AddNode(new NodeSystem.Node(Random.Range(-100,100), Random.Range(-100, 100), Random.Range(-100, 100)));
+        //    ui_nodePanel.UpdateUI();
+        //}
     }
 
     public NodeSystem getNodeSystem()

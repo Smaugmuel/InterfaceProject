@@ -30,9 +30,7 @@ public class UI_nodePanel : MonoBehaviour
 
             item.GetComponent<UI_nodeItem>().ID = i;
             item.GetComponent<UI_nodeItem>().Node = (NodeSystem.Node)ns.Nodes[i];
-        }
-
-        
+        }   
     }
 
     // Start is called before the first frame update
