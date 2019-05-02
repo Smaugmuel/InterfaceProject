@@ -15,7 +15,12 @@ public class CameraMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Manage camera movement
+        ManageMovement();
+        ManageZoom();
+    }
+
+    void ManageMovement()
+    {
         if (Input.GetMouseButton(2))
         {
             if (Input.GetMouseButtonDown(2))
@@ -35,24 +40,37 @@ public class CameraMovement : MonoBehaviour
 
             Camera.main.transform.position = cameraPos + movement;
         }
-
-        // Manage zoom
+    }
+    void ManageZoom()
+    {
         float scrolled = Input.mouseScrollDelta.y;
         if (scrolled != 0.0f)
         {
             float orthoSize = Camera.main.orthographicSize;
             orthoSize -= scrolled;
 
-            if (orthoSize < 1.0f)
-            {
-                orthoSize = 1.0f;
-            }
-            if (orthoSize > 16.0f)
-            {
-                orthoSize = 16.0f;
-            }
-            //Mathf.Clamp(orthoSize, 1.0f, 16.0f);
+            if (orthoSize < 1.0f)   orthoSize = 1.0f;
+            if (orthoSize > 16.0f)  orthoSize = 16.0f;
+            //Mathf.Clamp(orthoSize, 1.0f, 16.0f);      // Did not work
+
             Camera.main.orthographicSize = orthoSize;
+
+
+            // Zoom based on mouse pointer location
+
+            //Camera.main.transform.position;
+
+
+
+
+            float screenWidth = Screen.width;
+            float screenHeight = Screen.height;
+
+
+
+
+
+            Debug.Log(screenWidth.ToString() + "x" + screenHeight.ToString());
         }
     }
 }
