@@ -4,6 +4,10 @@ public class spawner : MonoBehaviour
 {
     public GameObject waypoint_model;
 
+    [SerializeField]
+    public GameController gc;
+    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,7 +39,10 @@ public class spawner : MonoBehaviour
 
     void SpawnWaypoint(Vector3 pos)
     {
-        Instantiate(waypoint_model, pos + new Vector3(0f, 1f, 0f), Quaternion.identity);
+        pos += new Vector3(0f, 1f, 0f);
+        Instantiate(waypoint_model, pos, Quaternion.identity);
+        NodeSystem ns = gc.getNodeSystem();
+        ns.AddNode(pos.x, pos.y, pos.z);
     }
 
     RaycastHit[] sortHitList(RaycastHit[] hits)
