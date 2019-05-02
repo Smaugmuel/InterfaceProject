@@ -136,7 +136,6 @@ public class NodeSystem
         }
     }
 
-
     //===========NODE SYSTEM=============
     ArrayList nodes = new ArrayList();
     ArrayList lines = new ArrayList();

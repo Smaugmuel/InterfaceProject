@@ -4,6 +4,14 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
+
+
+
+    public void func()
+    {
+        print("hej");
+    }
+
     // Start is called before the first frame update
     void Start()
     {
