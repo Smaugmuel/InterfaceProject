@@ -20,7 +20,7 @@ public class spawner : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(mousePos);
             RaycastHit hit;
             
-            if (Physics.Raycast(ray, out hit, 1000f))
+            if (Physics.Raycast(ray, out hit, 1000f, 9))
             {
                 SpawnWaypoint(hit.point);
             }
