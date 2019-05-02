@@ -9,7 +9,6 @@ public class NodeSystem
 
     public static void Test()
     {
-
         bool _nodesystemDebug_temp = _nodesystemDebug;
         _nodesystemDebug = true;
 
@@ -167,16 +166,19 @@ public class NodeSystem
             if (_nodesystemDebug)
                 MonoBehaviour.print("(RemoveNode) i: " + i);
 
-            //For Each Connection, Remove itself from the 2 connected nodes
-            ((Line)nodeConnections[i]).Nodes[0].Connections.Remove(nodeConnections[i]);
+            Line connectionToRemove = (Line)nodeConnections[i];
+
+        //For Each Connection, Remove itself from the 2 connected nodes
+            connectionToRemove.Nodes[0].Connections.Remove(connectionToRemove);
             if (_nodesystemDebug)
                 MonoBehaviour.print("(RemoveNode) check1");
 
-            ((Line)nodeConnections[i]).Nodes[1].Connections.Remove(nodeConnections[i]);
+            connectionToRemove.Nodes[1].Connections.Remove(connectionToRemove);
             if (_nodesystemDebug)
                 MonoBehaviour.print("(RemoveNode) check2");
+
             //Remove the connection from the nodesystem
-            lines.Remove(nodeConnections[i]);
+            lines.Remove(connectionToRemove);
             i--;
         }
 
