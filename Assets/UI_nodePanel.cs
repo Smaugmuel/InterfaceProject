@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UI_nodePanel : MonoBehaviour
 {
@@ -10,6 +11,10 @@ public class UI_nodePanel : MonoBehaviour
     GameObject nodeItem_Prefab;
     [SerializeField]
     GameController gameController;
+    [SerializeField]
+    GameObject content;
+    [SerializeField]
+    ScrollRect sc = null;
 
     float nextUpdate = 0;
 
@@ -23,7 +28,7 @@ public class UI_nodePanel : MonoBehaviour
 
         for (int i = 0; i < ns.Nodes.Count; i++)
         {
-            GameObject item = Instantiate(nodeItem_Prefab, gameObject.transform);
+            GameObject item = Instantiate(nodeItem_Prefab, content.transform);
             Vector3 itemPos = new Vector3(0.0f, i * -25.0f -15, 0.0f);
 
             item.transform.localPosition = itemPos;
@@ -31,7 +36,9 @@ public class UI_nodePanel : MonoBehaviour
             item.GetComponent<UI_nodeItem>().ID = i;
             item.GetComponent<UI_nodeItem>().Node = (NodeSystem.Node)ns.Nodes[i];
             item.GetComponent<UI_nodeItem>().UpdateUI();
-        }   
+        }
+        sc.GraphicUpdateComplete();
+
     }
 
     // Start is called before the first frame update
