@@ -8,6 +8,7 @@ public class spawner : MonoBehaviour
     public GameController gc;
 
     public Camera sideCamera;
+    public GameObject viewportImage;
 
     private Vector3 waypointPlaceOffset = new Vector3(0f, 1f, 0f);
     
