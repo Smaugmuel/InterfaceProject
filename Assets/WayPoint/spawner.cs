@@ -6,7 +6,8 @@ public class spawner : MonoBehaviour
 
     [SerializeField]
     public GameController gc;
-    
+    [SerializeField]
+    UI_nodePanel nodePanel;
 
     // Start is called before the first frame update
     void Start()
@@ -43,6 +44,8 @@ public class spawner : MonoBehaviour
         Instantiate(waypoint_model, pos, Quaternion.identity);
         NodeSystem ns = gc.getNodeSystem();
         ns.AddNode(pos.x, pos.y, pos.z);
+
+        nodePanel.UpdateUI();
     }
 
     RaycastHit[] sortHitList(RaycastHit[] hits)
