@@ -1030,11 +1030,9 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 149433875}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
-<<<<<<< HEAD
 --- !u!1 &173661793
-=======
+
 --- !u!1 &161730759
->>>>>>> merge-picking-nodeSystem
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1042,42 +1040,37 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-<<<<<<< HEAD
   - component: {fileID: 173661796}
   - component: {fileID: 173661795}
   - component: {fileID: 173661794}
   m_Layer: 0
   m_Name: Camera
-=======
+
   - component: {fileID: 161730760}
   - component: {fileID: 161730762}
   - component: {fileID: 161730761}
   - component: {fileID: 161730763}
   m_Layer: 5
   m_Name: SideCameraImage
->>>>>>> merge-picking-nodeSystem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
-<<<<<<< HEAD
 --- !u!81 &173661794
 AudioListener:
-=======
+
 --- !u!224 &161730760
 RectTransform:
->>>>>>> merge-picking-nodeSystem
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-<<<<<<< HEAD
   m_GameObject: {fileID: 173661793}
   m_Enabled: 1
 --- !u!20 &173661795
 Camera:
-=======
+
   m_GameObject: {fileID: 161730759}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -1093,12 +1086,10 @@ Camera:
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &161730761
 MonoBehaviour:
->>>>>>> merge-picking-nodeSystem
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-<<<<<<< HEAD
   m_GameObject: {fileID: 173661793}
   m_Enabled: 1
   serializedVersion: 2
@@ -1111,7 +1102,7 @@ MonoBehaviour:
   m_LensShift: {x: 0, y: 0}
   m_FocalLength: 50
   m_NormalizedViewPortRect:
-=======
+
   m_GameObject: {fileID: 161730759}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -1128,13 +1119,12 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Texture: {fileID: 8400000, guid: 78d49203d55c56f43bf3a562da0997cb, type: 2}
   m_UVRect:
->>>>>>> merge-picking-nodeSystem
+
     serializedVersion: 2
     x: 0
     y: 0
     width: 1
     height: 1
-<<<<<<< HEAD
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
@@ -1157,15 +1147,15 @@ MonoBehaviour:
   m_StereoSeparation: 0.022
 --- !u!4 &173661796
 Transform:
-=======
+
 --- !u!222 &161730762
 CanvasRenderer:
->>>>>>> merge-picking-nodeSystem
+
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-<<<<<<< HEAD
+
   m_GameObject: {fileID: 173661793}
   m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
   m_LocalPosition: {x: -0.57, y: 13.38, z: 2.82}
@@ -1175,7 +1165,7 @@ CanvasRenderer:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 90, y: 90, z: 0}
-=======
+
   m_GameObject: {fileID: 161730759}
   m_CullTransparentMesh: 0
 --- !u!114 &161730763
@@ -1192,7 +1182,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   camera: {fileID: 1097161899}
   textureTransform: {fileID: 161730760}
->>>>>>> merge-picking-nodeSystem
+
 --- !u!1 &175456419
 GameObject:
   m_ObjectHideFlags: 0
@@ -6826,22 +6816,22 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-<<<<<<< HEAD
+
   m_LocalRotation: {x: -0.19106467, y: -0.45939264, z: 0.80093, w: 0.33311245}
   m_LocalPosition: {x: 10.54, y: 6.88, z: 4.86}
-=======
+
   m_LocalRotation: {x: 0.707107, y: -0, z: -0, w: 0.7071066}
   m_LocalPosition: {x: 2.77, y: 16.79, z: 3.51}
->>>>>>> merge-picking-nodeSystem
+
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 173661796}
   m_RootOrder: 0
-<<<<<<< HEAD
+
   m_LocalEulerAnglesHint: {x: 37.488003, y: -50.482002, z: 116.656006}
-=======
+
   m_LocalEulerAnglesHint: {x: 90.00001, y: 0, z: 0}
->>>>>>> merge-picking-nodeSystem
+
 --- !u!1 &989846860
 GameObject:
   m_ObjectHideFlags: 0
