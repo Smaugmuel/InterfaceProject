@@ -113,7 +113,9 @@ public class CameraMovement : MonoBehaviour
 
                 // Flip movement when zooming out
                 if (scrolled < 0) movement *= -1.0f;
-                
+
+                // Stop movement when max or min zoomed
+                if (orthoSize == orthoMin || orthoSize == orthoMax) movement *= 0.0f;
                 Camera.main.transform.position += movement;
                 
                 Debug.Log(
