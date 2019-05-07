@@ -12,7 +12,15 @@ public class UI_nodeItem : MonoBehaviour
     [SerializeField]
     Text CoordText;
 
+    [SerializeField]
+    spawner spawnhandler;
+
     int id = 0;
+
+    public void Clicked()
+    {
+        spawnhandler.SetSelectedNode(node);
+    }
 
     public NodeSystem.Node Node
     {
@@ -44,7 +52,7 @@ public class UI_nodeItem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        spawnhandler = GameObject.FindGameObjectWithTag("spawner").GetComponent<spawner>();
     }
 
     // Update is called once per frame

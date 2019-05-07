@@ -37,7 +37,6 @@ public class UI_nodePanel : MonoBehaviour
             item.GetComponent<UI_nodeItem>().Node = (NodeSystem.Node)ns.Nodes[i];
             item.GetComponent<UI_nodeItem>().UpdateUI();
         }
-        sc.GraphicUpdateComplete();
 
     }
 
