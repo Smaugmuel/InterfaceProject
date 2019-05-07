@@ -3516,6 +3516,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6cc75ffa4f87d14f95f82ba7eeb4ec7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  orthoMin: 1
+  orthoMax: 16
+  movementSpeed: 0.05
+  zoomMovementSpeed: 3
 --- !u!4 &430661693
 Transform:
   m_ObjectHideFlags: 0
