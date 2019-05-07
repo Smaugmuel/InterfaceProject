@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - ui_node_item
+  - spawner
   layers:
   - Default
   - TransparentFX
