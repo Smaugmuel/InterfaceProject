@@ -11,6 +11,9 @@ public class spawner : MonoBehaviour
     public GameObject viewportImage;
 
     private Vector3 waypointPlaceOffset = new Vector3(0f, 1f, 0f);
+
+    private bool lastPlacedExists = false;
+    private Vector3 lastPlacedPosition;
     
 
     // Start is called before the first frame update
@@ -34,15 +37,37 @@ public class spawner : MonoBehaviour
             {
                 hits = sortHitList(hits);
 
-                // If multiple
-                if (hits.Length > 1)
+                // If single hit
+                if (hits.Length == 1)
+                {
+                    SpawnWaypoint(hits[0].point);
+                }
+                else
                 {
                     moveSideCamera(getAveragePos(hits));
-                }
 
-                for (int i = 0; i < hits.Length; i++)
-                {
-                    SpawnWaypoint(hits[i].point);
+                    if (lastPlacedExists)
+                    {
+                        // Find hit closest to last placed, only compare y
+                        int closest = 0;
+                        float closestDistance = float.MaxValue;
+                        for (int i = 0; i < hits.Length; i++)
+                        {
+                            if (distanceBetweenY(hits[i].point, lastPlacedPosition) < closestDistance)
+                            {
+                                closest = i;
+                                closestDistance = distanceBetweenY(hits[i].point, lastPlacedPosition);
+                            }
+                        }
+
+                        SpawnWaypoint(hits[closest].point);
+                    }
+                    else
+                    {
+                        // Spawn first
+                        SpawnWaypoint(hits[0].point);
+                        lastPlacedExists = true;
+                    }
                 }
             }
         }
@@ -54,6 +79,8 @@ public class spawner : MonoBehaviour
         Instantiate(waypoint_model, pos, Quaternion.identity);
         NodeSystem ns = gc.getNodeSystem();
         ns.AddNode(pos.x, pos.y, pos.z);
+
+        lastPlacedPosition = pos;
     }
 
     RaycastHit[] sortHitList(RaycastHit[] hits)
@@ -126,5 +153,10 @@ public class spawner : MonoBehaviour
 
         sideCamera.transform.position = lookAt + dirFromOrigo + new Vector3(0, 3f, 0f);
         sideCamera.transform.LookAt(lookAt);
+    }
+
+    float distanceBetweenY(Vector3 v, Vector3 u)
+    {
+        return Mathf.Abs((v - u).y);
     }
 }
