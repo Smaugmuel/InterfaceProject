@@ -136,7 +136,6 @@ public class NodeSystem
         }
     }
 
-
     //===========NODE SYSTEM=============
     ArrayList nodes = new ArrayList();
     ArrayList lines = new ArrayList();
@@ -146,9 +145,12 @@ public class NodeSystem
 
     }
 
-    public void AddNode(float x, float y, float z)
+    public Node AddNode(float x, float y, float z)
     {
-        nodes.Add(new Node(x, y, z));
+        Node n = new Node(x, y, z);
+        nodes.Add(n);
+
+        return n;
     }
 
     public void AddNode(Node node)

@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
-
+using System.Collections;
 public class spawner : MonoBehaviour
 {
     public GameObject waypoint_model;
+
+    Color standarColor;
+    Color selectedColor;
 
     [SerializeField]
     public GameController gc;
@@ -14,12 +17,33 @@ public class spawner : MonoBehaviour
 
     private bool lastPlacedExists = false;
     private Vector3 lastPlacedPosition;
-    
+
+    [SerializeField]
+    UI_nodePanel nodePanel;
+
+    ArrayList m_waypoints = new ArrayList();
+    GameObject selectedNode;
+    public void SetSelectedNode(NodeSystem.Node node)
+    {
+        for(int i = 0; i < m_waypoints.Count; i++)
+        {
+            if(((GameObject)m_waypoints[i]).GetComponent<waypoint_script>().Node == node)
+            {
+                if(selectedNode != null)
+                    selectedNode.GetComponent<Renderer>().material.color = standarColor;
+                selectedNode = ((GameObject)m_waypoints[i]);
+                selectedNode.GetComponent<Renderer>().material.color = selectedColor;
+
+                return;
+            }
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        //
+        standarColor = Color.blue;
+        selectedColor = Color.green;
     }
 
     // Update is called once per frame
@@ -75,12 +99,19 @@ public class spawner : MonoBehaviour
 
     void SpawnWaypoint(Vector3 pos)
     {
-        pos += waypointPlaceOffset;
-        Instantiate(waypoint_model, pos, Quaternion.identity);
-        NodeSystem ns = gc.getNodeSystem();
-        ns.AddNode(pos.x, pos.y, pos.z);
-
         lastPlacedPosition = pos;
+        pos += waypointPlaceOffset;
+        GameObject obj = Instantiate(waypoint_model, pos, Quaternion.identity);
+        obj.GetComponent<Renderer>().material.color = standarColor;
+        waypoint_script wp = obj.GetComponent<waypoint_script>();
+
+        NodeSystem ns = gc.getNodeSystem();
+        NodeSystem.Node node = ns.AddNode(pos.x, pos.y, pos.z);
+        wp.Node = node;
+
+        m_waypoints.Add(obj);
+
+        nodePanel.UpdateUI();
     }
 
     RaycastHit[] sortHitList(RaycastHit[] hits)
