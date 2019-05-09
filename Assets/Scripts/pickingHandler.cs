@@ -49,86 +49,89 @@ public class pickingHandler : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetMouseButtonDown(0))
+        if (!Input.GetKey("space")) 
         {
-            // Check if mouse pos is MAIN VIEW or SIDE VIEW (exclude node list)
-            Vector2 mousePos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
-
-            // Calculate SIDE VIEW min-max coordinates
-            Vector2 sideViewSize = new Vector2(sideViewRect.rect.width * ui_canvas.scaleFactor, sideViewRect.rect.height * ui_canvas.scaleFactor);
-            Vector2 sideMin = new Vector2(sideViewRect.position.x - sideViewSize.x / 2f, sideViewRect.position.y - sideViewSize.y / 2f);
-            Vector2 sideMax = new Vector2(sideViewRect.position.x + sideViewSize.x / 2f, sideViewRect.position.y + sideViewSize.y / 2f);
-
-            // Inside MAIN VIEW
-            if (mousePos.x < sideMin.x)
+            if (Input.GetMouseButtonDown(0))
             {
-                Ray ray = Camera.main.ScreenPointToRay(mousePos);
+                // Check if mouse pos is MAIN VIEW or SIDE VIEW (exclude node list)
+                Vector2 mousePos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
 
-                // Check if new position, include delta to eliminate -to close points-
-                // mouseWorldPoint is necessary since camera can move and lastPlacedPos is in world space
-                Vector3 mouseWorldPoint = camera_main.ViewportToWorldPoint(mousePos);
-                Vector2 mouseWorldPoint2D = new Vector2(ray.origin.x, ray.origin.z); // Possible since ray direction is (0, -1, 0)
-                Vector2 lastPlaced2D = new Vector2(lastPlacedPos.x, lastPlacedPos.z);
+                // Calculate SIDE VIEW min-max coordinates
+                Vector2 sideViewSize = new Vector2(sideViewRect.rect.width * ui_canvas.scaleFactor, sideViewRect.rect.height * ui_canvas.scaleFactor);
+                Vector2 sideMin = new Vector2(sideViewRect.position.x - sideViewSize.x / 2f, sideViewRect.position.y - sideViewSize.y / 2f);
+                Vector2 sideMax = new Vector2(sideViewRect.position.x + sideViewSize.x / 2f, sideViewRect.position.y + sideViewSize.y / 2f);
 
-                // New position
-                if (Vector2.Distance(mouseWorldPoint2D, lastPlaced2D) > 0.5f)
+                // Inside MAIN VIEW
+                if (mousePos.x < sideMin.x)
                 {
-                    ClearGhostList();
+                    Ray ray = Camera.main.ScreenPointToRay(mousePos);
 
-                    // Find all possible placements from click, mask waypoints
-                    RaycastHit[] hits = Physics.RaycastAll(ray, 1000f, 9);
+                    // Check if new position, include delta to eliminate -to close points-
+                    // mouseWorldPoint is necessary since camera can move and lastPlacedPos is in world space
+                    Vector3 mouseWorldPoint = camera_main.ViewportToWorldPoint(mousePos);
+                    Vector2 mouseWorldPoint2D = new Vector2(ray.origin.x, ray.origin.z); // Possible since ray direction is (0, -1, 0)
+                    Vector2 lastPlaced2D = new Vector2(lastPlacedPos.x, lastPlacedPos.z);
 
-                    // If only one hit -> place waypoint
-                    if (hits.Length == 1)
+                    // New position
+                    if (Vector2.Distance(mouseWorldPoint2D, lastPlaced2D) > 0.5f)
                     {
-                        SpawnWaypoint(hits[0].point);
-                    }
-                    else if (hits.Length > 1)
-                    {
-                        // Sort list by hight, highest to lowest.
-                        // Eliminate all fake hits.
-                        hits = SortHitList(hits);
+                        ClearGhostList();
 
-                        // Move side camera
-                        MoveSideCamera(GetAverageHitPos(hits));
+                        // Find all possible placements from click, mask waypoints
+                        RaycastHit[] hits = Physics.RaycastAll(ray, 1000f, 9);
 
-                        // Predict user choice from hits
-                        int predicted = GetPredictedIndex(hits);
-
-                        for (int i = 0; i < hits.Length; i++)
+                        // If only one hit -> place waypoint
+                        if (hits.Length == 1)
                         {
-                            if (i == predicted)
+                            SpawnWaypoint(hits[0].point);
+                        }
+                        else if (hits.Length > 1)
+                        {
+                            // Sort list by hight, highest to lowest.
+                            // Eliminate all fake hits.
+                            hits = SortHitList(hits);
+
+                            // Move side camera
+                            MoveSideCamera(GetAverageHitPos(hits));
+
+                            // Predict user choice from hits
+                            int predicted = GetPredictedIndex(hits);
+
+                            for (int i = 0; i < hits.Length; i++)
                             {
-                                SpawnWaypoint(hits[i].point);
-                            }
-                            else
-                            {
-                                SpawnGhost(hits[i].point);
+                                if (i == predicted)
+                                {
+                                    SpawnWaypoint(hits[i].point);
+                                }
+                                else
+                                {
+                                    SpawnGhost(hits[i].point);
+                                }
                             }
                         }
                     }
                 }
-            }
-            else if (mousePos.y < sideMax.y) // Inside SIDE VIEW (given !(mousePos.x < sideMin.x))
-            {
-                // Calculate local coordinates within side view -window-
-                Vector2 localPos = mousePos - sideMin;
-
-                // Convert coordinate to [0;1]
-                localPos /= sideViewSize;
-
-                // Raycast into world from side camera
-                Ray ray = camera_side.ViewportPointToRay(localPos);
-                RaycastHit hit;
-
-                if (Physics.Raycast(ray, out hit, 1000f))
+                else if (mousePos.y < sideMax.y) // Inside SIDE VIEW (given !(mousePos.x < sideMin.x))
                 {
-                    if (IsGhost(hit.collider.gameObject))
+                    // Calculate local coordinates within side view -window-
+                    Vector2 localPos = mousePos - sideMin;
+
+                    // Convert coordinate to [0;1]
+                    localPos /= sideViewSize;
+
+                    // Raycast into world from side camera
+                    Ray ray = camera_side.ViewportPointToRay(localPos);
+                    RaycastHit hit;
+
+                    if (Physics.Raycast(ray, out hit, 1000f))
                     {
-                        ConvertWaypointToGhost(lastPlaced);
-                        ConvertGhostToWaypoint(hit.collider.gameObject);
+                        if (IsGhost(hit.collider.gameObject))
+                        {
+                            ConvertWaypointToGhost(lastPlaced);
+                            ConvertGhostToWaypoint(hit.collider.gameObject);
+                        }
+                        //hit.collider.GetComponent<MeshRenderer>().material.color = new Color(0f, 0f, 0f);
                     }
-                    //hit.collider.GetComponent<MeshRenderer>().material.color = new Color(0f, 0f, 0f);
                 }
             }
         }
