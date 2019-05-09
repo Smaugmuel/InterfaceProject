@@ -5,7 +5,10 @@ using UnityEngine;
 
 public class ChangeImagePosToMouse : MonoBehaviour
 {
-    public GameObject gameObjectB;
+
+
+    public Camera gameObjectB;
+    public Camera mainCamera;
     Vector3 pos;
     Vector3 centerPos;
     Vector3 sideCamerPos;
@@ -13,7 +16,7 @@ public class ChangeImagePosToMouse : MonoBehaviour
     void Start()
     {
         sideCamerPos = gameObjectB.transform.position;
-        centerPos = new Vector3(Screen.width * 0.5f, Screen.height * 0.5f, 0);
+        centerPos = new Vector3(Screen.width * 0.5f, Screen.height * 0.7f, 0);
     }
 
     // Update is called once per frame
@@ -24,9 +27,16 @@ public class ChangeImagePosToMouse : MonoBehaviour
         //if (Input.GetMouseButtonDown(0))
         if (sideCamerPos != gameObjectB.transform.position)
         {
+            Vector3 camPos = mainCamera.WorldToScreenPoint(gameObjectB.transform.position);
+            
+            Vector3 rotateDir = camPos - Input.mousePosition;
+
+            float rotAngle = Mathf.Atan2(rotateDir.y, rotateDir.x) * Mathf.Rad2Deg;
+            Quaternion newRot = Quaternion.AngleAxis(rotAngle + 90, Vector3.forward);
+
+            transform.rotation = newRot;
             transform.position = Input.mousePosition;
-            transform.LookAt(centerPos);
-            transform.Rotate(0, 90, 90 - 31);
+            
             sideCamerPos = gameObjectB.transform.position;
         }
 
