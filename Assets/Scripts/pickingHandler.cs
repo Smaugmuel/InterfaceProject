@@ -5,6 +5,8 @@ public class pickingHandler : MonoBehaviour
 {
     private const int MAX_GHOST_COUNT = 10;
     private Vector3 placeOffset = new Vector3(0f, 1f, 0f);
+    public static Vector2 cameraLookAt = new Vector2(0f, 0f);
+
 
     // Variables for node system usage
     [SerializeField]
@@ -53,6 +55,8 @@ public class pickingHandler : MonoBehaviour
         {
             // Check if mouse pos is MAIN VIEW or SIDE VIEW (exclude node list)
             Vector2 mousePos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+
+            cameraLookAt = mousePos;
 
             // Calculate SIDE VIEW min-max coordinates
             Vector2 sideViewSize = new Vector2(sideViewRect.rect.width * ui_canvas.scaleFactor, sideViewRect.rect.height * ui_canvas.scaleFactor);
@@ -279,8 +283,10 @@ public class pickingHandler : MonoBehaviour
     void MoveSideCamera(Vector3 lookAt)
     {
         // All waypoint models offsets upwards -> offset lookAt too
+        //cameraLookAt = lookAt;
+
         lookAt += placeOffset;
-        Vector3 dirFromOrigo = new Vector3(lookAt.x, 0f, lookAt.y).normalized * 6f;
+        Vector3 dirFromOrigo = new Vector3(lookAt.x, 0f, lookAt.z).normalized * 6f;
 
         camera_side.transform.position = lookAt + dirFromOrigo + new Vector3(0, 3f, 0f);
         camera_side.transform.LookAt(lookAt);
