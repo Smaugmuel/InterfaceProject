@@ -7067,7 +7067,7 @@ RectTransform:
   m_LocalScale: {x: 1.6866249, y: 5.221947, z: 2.5589}
   m_Children: []
   m_Father: {fileID: 1828657552}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -8754,7 +8754,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 359237344}
   m_Direction: 0
   m_Value: 0
-  m_Size: 0.9999995
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -15487,17 +15487,17 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 11405222, guid: 69988eeaf22db50428892b9cf8812ad4, type: 3}
-      propertyPath: useLazySelection
-      value: 1
+    - target: {fileID: 22401190, guid: 69988eeaf22db50428892b9cf8812ad4, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 11405222, guid: 69988eeaf22db50428892b9cf8812ad4, type: 3}
-      propertyPath: myCG
-      value: 
-      objectReference: {fileID: 48499817}
-    - target: {fileID: 11405222, guid: 69988eeaf22db50428892b9cf8812ad4, type: 3}
-      propertyPath: useSelectionFollower
-      value: 1
+    - target: {fileID: 22401190, guid: 69988eeaf22db50428892b9cf8812ad4, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 22401190, guid: 69988eeaf22db50428892b9cf8812ad4, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 22522322, guid: 69988eeaf22db50428892b9cf8812ad4, type: 3}
       propertyPath: m_Enabled
@@ -15514,6 +15514,18 @@ PrefabInstance:
     - target: {fileID: 22522322, guid: 69988eeaf22db50428892b9cf8812ad4, type: 3}
       propertyPath: m_Alpha
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11405222, guid: 69988eeaf22db50428892b9cf8812ad4, type: 3}
+      propertyPath: useLazySelection
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11405222, guid: 69988eeaf22db50428892b9cf8812ad4, type: 3}
+      propertyPath: myCG
+      value: 
+      objectReference: {fileID: 48499817}
+    - target: {fileID: 11405222, guid: 69988eeaf22db50428892b9cf8812ad4, type: 3}
+      propertyPath: useSelectionFollower
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 143072, guid: 69988eeaf22db50428892b9cf8812ad4, type: 3}
       propertyPath: m_IsActive

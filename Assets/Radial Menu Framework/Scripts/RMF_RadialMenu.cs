@@ -12,6 +12,7 @@ public class RMF_RadialMenu : MonoBehaviour {
     [HideInInspector]
     public RectTransform rt;
     public CanvasGroup myCG;//Its your Canvas
+    bool isVisible = false;
 
     //public RectTransform baseCircleRT;
     //public Image selectionFollowerImage;
@@ -102,20 +103,28 @@ public class RMF_RadialMenu : MonoBehaviour {
     // Update is called once per frame
     void Update() {
 
-        Debug.Log("Pressed left click.");
-
-
         if (Input.GetKeyDown("space"))
         {
             myCG.interactable=true;
             myCG.blocksRaycasts=true;
             myCG.alpha = 1;
+            isVisible = true;
         }
         else if (Input.GetKeyUp("space"))
         {
             myCG.interactable=false;
             myCG.blocksRaycasts=false;
             myCG.alpha = 0;
+            isVisible = false;
+        }
+
+        if (!isVisible)
+        {
+            //rt = GetComponent<RectTransform>();
+            rt.SetPositionAndRotation(new Vector3( Input.mousePosition.x, Input.mousePosition.y, 0f), Quaternion.Euler(0f, 0f, 0f));
+
+            //rt.position.Set(Input.mousePosition.x, Input.mousePosition.y, 0);
+
         }
         //If your gamepad uses different horizontal and vertical joystick inputs, change them here!
         //==============================================================================================
