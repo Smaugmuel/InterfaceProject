@@ -205,8 +205,24 @@ public class pickingHandler : MonoBehaviour
     {
         Vector3 pos = waypoint.transform.position - placeOffset;
         gc.getNodeSystem().RemoveNode(waypoint.GetComponent<waypoint_script>().Node);
-        Destroy(waypoint);
+        EraseWaypoint(waypoint);
         SpawnGhost(pos);
+    }
+
+    void EraseWaypoint(GameObject waypoint)
+    {
+        for (int i = 0; i < m_waypoints.Count; i++)
+        {
+            if (m_waypoints[i] == waypoint)
+            {
+                Debug.Log("Count: " + m_waypoints.Count);
+                m_waypoints.RemoveAt(i);
+                Debug.Log("Count: " + m_waypoints.Count);
+                break;
+            }
+        }
+
+        Destroy(waypoint);
     }
 
     bool IsGhost(GameObject obj)
