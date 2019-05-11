@@ -1149,6 +1149,8 @@ MonoBehaviour:
     type: 3}
   model_ghost: {fileID: 1508128866401026718, guid: 1f3a56c9f23dc0745a90d47b9e775df4,
     type: 3}
+  model_connection: {fileID: 5644457545064848833, guid: c315e1b88f5c9de45a014037c43a0e19,
+    type: 3}
   sideViewRect: {fileID: 161730760}
   ui_canvas: {fileID: 1828657551}
   camera_main: {fileID: 963194227}
@@ -3002,7 +3004,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000009030104}
+  m_AnchoredPosition: {x: 0, y: -0.0000065639615}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &284213829

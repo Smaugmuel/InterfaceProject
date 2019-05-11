@@ -163,9 +163,12 @@ public class NodeSystem
         lines.Add(line);
     }
 
-    public void AddLine(Node n1, Node n2, int type = 0)
+    public Line AddLine(Node n1, Node n2, int type = 0)
     {
-        lines.Add(new Line(n1, n2, type));
+        Line line = new Line(n1, n2, type);
+        lines.Add(line);
+
+        return line;
     }
 
     public void RemoveNode(Node node)
