@@ -22,21 +22,22 @@ public class ChangeImagePosToMouse : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         //transform.position = pos;
-        //if (Input.GetMouseButtonDown(0))
         if (sideCamerPos != gameObjectB.transform.position)
         {
             Vector3 camPos = mainCamera.WorldToScreenPoint(gameObjectB.transform.position);
+
+            Vector3 target = mainCamera.WorldToScreenPoint(pickingHandler.sideCameraLookAt);
+            Vector3 rotateDir = camPos - target;
             
-            Vector3 rotateDir = camPos - Input.mousePosition;
+            //Vector3 rotateDir = camPos - Input.mousePosition;
 
             float rotAngle = Mathf.Atan2(rotateDir.y, rotateDir.x) * Mathf.Rad2Deg;
             Quaternion newRot = Quaternion.AngleAxis(rotAngle + 90, Vector3.forward);
 
             transform.rotation = newRot;
-            transform.position = Input.mousePosition;
-            
+            transform.position = camPos;//Input.mousePosition;
+
             sideCamerPos = gameObjectB.transform.position;
         }
 

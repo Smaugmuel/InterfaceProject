@@ -1521,7 +1521,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 695962493}
   m_HandleRect: {fileID: 695962492}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -4010,6 +4010,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6cc75ffa4f87d14f95f82ba7eeb4ec7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  topDownCam: {fileID: 963194227}
+  sideCam: {fileID: 1097161899}
+  sideCamViewRect: {fileID: 161730760}
+  ui_canvas: {fileID: 1828657551}
   orthoMin: 1
   orthoMax: 16
   movementSpeed: 0.05
@@ -8754,7 +8758,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 359237345}
   m_HandleRect: {fileID: 359237344}
   m_Direction: 0
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
