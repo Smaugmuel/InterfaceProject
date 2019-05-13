@@ -129,6 +129,16 @@ public class NodeSystem
             get { return nodes; }
         }
 
+        public Node GetOther(Node n) {
+            for(int i = 0; i < 2; i++)
+            {
+                if (nodes[i] != n)
+                    return n;
+            }
+
+            return null;
+        }
+
         public int Type
         {
             get { return type; }
