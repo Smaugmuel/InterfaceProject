@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 struct Connection
 {
@@ -18,8 +18,9 @@ public class pickingHandler : MonoBehaviour
     // Variables for node system usage
     [SerializeField]
     public GameController gc;
-    ArrayList m_waypoints = new ArrayList();
-    ArrayList m_connections = new ArrayList();
+    List<GameObject> m_waypoints = new List<GameObject>();
+    List<Connection> m_connections = new List<Connection>();
+
     public UI_nodePanel nodePanel;
     private Color standardColor;
     private Color selectColor;

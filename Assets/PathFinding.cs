@@ -37,8 +37,12 @@ public class PathFinding : MonoBehaviour
                 }
             }
 
+            //print("Openset count b4 Remove: " + openSet.Count);
             openSet.Remove(currentNode);
+            //print("Openset count after Remove: " + openSet.Count);
+
             closedSet.Add(currentNode);
+            //print("Closedset count: " + closedSet.Count);
 
             if (currentNode == end)
             {
@@ -46,8 +50,17 @@ public class PathFinding : MonoBehaviour
             }
             else
             {
-                foreach (NodeSystem.Node n in currentNode.GetNeighbours())
+                List<NodeSystem.Node> Neighbours = currentNode.GetNeighbours();
+                print("Neighbours: " + Neighbours.Count);
+
+                foreach (NodeSystem.Node n in Neighbours)
                 {
+                    if (n == currentNode)
+                    {
+                        print("Wrong: ");
+                        continue;
+                    }
+
                     float newCost = currentNode.gCost + currentNode.DistanceTo(n);
                     if (newCost < n.gCost || !openSet.Contains(n))
                     {
@@ -55,16 +68,16 @@ public class PathFinding : MonoBehaviour
                         n.hCost = n.DistanceTo(end);
                         n.parrent = currentNode;
 
-                        print(n.fCost);
+                        //print(n.fCost);
 
                         if (!openSet.Contains(n))
                         {
                             openSet.Add(n);
-                            print("Added");
+                            //print("Added");
                         }
                         else
                         {
-                            print("Changed");
+                            //print("Changed");
                         }
                     }
                 }
@@ -73,14 +86,17 @@ public class PathFinding : MonoBehaviour
 
         if (foundTarget)
         {
+            print("Target Found");
             NodeSystem.Node backTrack = end;
             while (backTrack != null)
             {
+                print("Parrent Jump");
+
                 actualPath.Add(backTrack);
                 backTrack = backTrack.parrent;
             }
 
-            actualPath.Reverse();
+            //actualPath.Reverse();
 
             foreach (NodeSystem.Node n in actualPath)
             {

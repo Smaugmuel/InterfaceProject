@@ -139,7 +139,7 @@ public class NodeSystem
         public Line(Node n1, Node n2, int _type = 0)
         {
             if (n1 == n2 || n1 == null || n2 == null)
-                MonoBehaviour.print("Somethis is wrong in Line constructor!");
+                MonoBehaviour.print("Something is wrong in Line constructor!");
 
             type = _type;
             nodes[0] = n1;
@@ -155,14 +155,7 @@ public class NodeSystem
         }
 
         public Node GetOther(Node n) {
-            for(int i = 0; i < 2; i++)
-            {
-                MonoBehaviour.print("Returned: " + i);
-                if (nodes[i] != n)
-                    return n;
-            }
-
-            return null;
+            return (nodes[0] == n) ? nodes[1] : nodes[0];
         }
 
         public int Type
