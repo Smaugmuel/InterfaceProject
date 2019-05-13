@@ -40,7 +40,7 @@ public class StateManager : MonoBehaviour
         
     }
 
-    public int GetStateIndex(string stateName)
+    public int NameToIndex(string stateName)
     {
         int index = -1;
         for (int i = 0; i < nStates; i++)
@@ -54,7 +54,7 @@ public class StateManager : MonoBehaviour
         return index;
     }
 
-    public string GetStateName(int index)
+    public string IndexToName(int index)
     {
         string name = "";
         if (index >= 0 && index < nStates)
@@ -77,6 +77,6 @@ public class StateManager : MonoBehaviour
 
     public bool SetState(string stateName)
     {
-        return SetState(GetStateIndex(stateName));
+        return SetState(NameToIndex(stateName));
     }
 }
