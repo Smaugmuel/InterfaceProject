@@ -4,81 +4,111 @@ using UnityEngine;
 
 public class PathFinding : MonoBehaviour
 {
+    [SerializeField]
+    GameController game;
 
     NodeSystem ns;
 
-    struct DistNode
+
+
+    List<NodeSystem.Node> CalulatePath(NodeSystem.Node start, NodeSystem.Node end)
     {
-        public NodeSystem.Node node;
-        public float f;
-        public float g;
-        public float h;
-    }
+        List<NodeSystem.Node> openSet = new List<NodeSystem.Node>();
+        List<NodeSystem.Node> closedSet = new List<NodeSystem.Node>();
+        List<NodeSystem.Node> actualPath = new List<NodeSystem.Node>();
 
-    ArrayList openSet;
-    ArrayList closedSet;
+        bool foundTarget = false;
 
-    void CalulatePath(NodeSystem.Node start, NodeSystem.Node end)
-    {
-        DistNode dn = new DistNode();
-        dn.node = start;
-        dn.f = 0;
+        start.parrent = null;
+        openSet.Add(start);
 
-        openSet.Add(dn);
+        int rageQuit = 0;
 
-        DistNode currentNode = new DistNode();
-        currentNode.f = 1000000;
-
-        bool b = false;
-
-        while (!b)
+        while (openSet.Count > 0 && !foundTarget && rageQuit != 1000)
         {
-            //1
-            for (int i = 0; i < openSet.Count; i++)
+            rageQuit++;
+
+            NodeSystem.Node currentNode = openSet[0];
+            for (int i = 1; i < openSet.Count; i++)
             {
-                DistNode temp = (DistNode)(openSet[i]);
-                if (temp.f < currentNode.f)
-                    currentNode = temp;
+                if (openSet[i].fCost < currentNode.fCost || (openSet[i].fCost == currentNode.fCost && openSet[i].hCost < currentNode.hCost))
+                {
+                    currentNode = openSet[i];
+                }
             }
 
-            //2
             openSet.Remove(currentNode);
+            closedSet.Add(currentNode);
 
-            //3
-            for (int i = 0; i < currentNode.node.Connections.Count; i++)
+            if (currentNode == end)
             {
-                NodeSystem.Node other = ((NodeSystem.Line)start.Connections[i]).GetOther(dn.node);
-                DistNode cDistNode = new DistNode();
-                cDistNode.node = other;
-                cDistNode.g = currentNode.g + other.DistanceTo(currentNode.node);
-                cDistNode.h = other.DistanceTo(end);
-                cDistNode.f = cDistNode.g + cDistNode.h;
+                foundTarget = true;
+            }
+            else
+            {
+                foreach (NodeSystem.Node n in currentNode.GetNeighbours())
+                {
+                    float newCost = currentNode.gCost + currentNode.DistanceTo(n);
+                    if (newCost < n.gCost || !openSet.Contains(n))
+                    {
+                        n.gCost = newCost;
+                        n.hCost = n.DistanceTo(end);
+                        n.parrent = currentNode;
 
-                if (other == end)
-                {
-                    print("Goal Found!");
-                    b = true;
-                    return;
-                }
-                else
-                {
-                    openSet.Add(cDistNode);
+                        print(n.fCost);
+
+                        if (!openSet.Contains(n))
+                        {
+                            openSet.Add(n);
+                            print("Added");
+                        }
+                        else
+                        {
+                            print("Changed");
+                        }
+                    }
                 }
             }
-
-            closedSet.Add(currentNode);
         }
+
+        if (foundTarget)
+        {
+            NodeSystem.Node backTrack = end;
+            while (backTrack != null)
+            {
+                actualPath.Add(backTrack);
+                backTrack = backTrack.parrent;
+            }
+
+            actualPath.Reverse();
+
+            foreach (NodeSystem.Node n in actualPath)
+            {
+                print(n.X + ", " + n.Y + ", " + n.Z);
+            }
+
+                return actualPath;
+        }
+        else
+        {
+            print("Did not find target!");
+        }
+
+        return null;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        ns = game.getNodeSystem();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyUp(KeyCode.A))
+        {
+            CalulatePath(ns.Nodes[0], ns.Nodes[ns.Nodes.Count - 1]);
+        }
     }
 }

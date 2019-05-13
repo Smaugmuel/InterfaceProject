@@ -194,7 +194,11 @@ public class pickingHandler : MonoBehaviour
         // Spawn connection between the two latest waypoints
         if (m_waypoints.Count > 1)
         {
-            CreateConnection(obj, lastPlaced);
+            for (int i = 0; i < m_waypoints.Count-1; i++)
+            {
+                if(Random.Range(0,100) > 50)
+                    CreateConnection(obj, (GameObject)m_waypoints[i]);
+            }
         }
 
         lastPlaced = obj;
