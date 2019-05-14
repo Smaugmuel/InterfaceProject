@@ -26,17 +26,25 @@ public class pickingHandler : MonoBehaviour
     GameObject selectedNode;
 
     // Models for instantiation
-    public GameObject model_waypoint;
+    //public GameObject model_waypoint;
     public GameObject model_ghost;
-    public GameObject model_connection;
+    public Material material_waypoint;
+    public Material material_highlight;
+    //public GameObject model_connection;
+
+    public ObjectHandler oh;
 
     // Temp list of ghosts when multiple alternatives occurs
     private GameObject[] ghostList = new GameObject[MAX_GHOST_COUNT];
     private int ghostCount;
 
     // To keep track of positioning prediction
-    private Vector3 lastPlacedPos;
+    private Vector3 lastHitPos;
     private GameObject lastPlaced;
+
+    // For adding connections manually
+    private GameObject[] con_selectedNodes = new GameObject[2];
+    private int con_selectedCount = 0; // Up to two
 
     // Variables for position calculation
     public RectTransform sideViewRect;
@@ -46,12 +54,16 @@ public class pickingHandler : MonoBehaviour
     public Camera camera_main;
     public Camera camera_side;
 
+    // DEBUG, 0 = waypoint, 1 = connection
+    [Range(0,1)]
+    public int DEBUG_STATE;
+
     private void Start()
     {
         // Default start position is not reachable from the main camera.
         // Default has a high y value to "predict" the first app interaction
         // to be placed on the highest position possible.
-        lastPlacedPos = new Vector3(0f, 100f, 0f);
+        lastHitPos = new Vector3(0f, 100f, 0f);
         ClearGhostList();
         standardColor = Color.blue;
         selectColor = Color.green;
@@ -60,6 +72,11 @@ public class pickingHandler : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            ChangeState(1 - DEBUG_STATE);
+        }
+
         if (!Input.GetKey("space")) 
         {
 //<<<<<<< HEAD
@@ -97,44 +114,79 @@ public class pickingHandler : MonoBehaviour
                     // mouseWorldPoint is necessary since camera can move and lastPlacedPos is in world space
                     Vector3 mouseWorldPoint = camera_main.ViewportToWorldPoint(mousePos);
                     Vector2 mouseWorldPoint2D = new Vector2(ray.origin.x, ray.origin.z); // Possible since ray direction is (0, -1, 0)
-                    Vector2 lastPlaced2D = new Vector2(lastPlacedPos.x, lastPlacedPos.z);
+                    Vector2 lastPlaced2D = new Vector2(lastHitPos.x, lastHitPos.z);
 
-                    // New position
-                    if (Vector2.Distance(mouseWorldPoint2D, lastPlaced2D) > 0.5f)
+                    if (DEBUG_STATE == 0) // Waypoint state
                     {
-                        ClearGhostList();
 
-                        // Find all possible placements from click, mask waypoints
-                        RaycastHit[] hits = Physics.RaycastAll(ray, 1000f, 9);
-
-                        // If only one hit -> place waypoint
-                        if (hits.Length == 1)
+                        // New position
+                        if (Vector2.Distance(mouseWorldPoint2D, lastPlaced2D) > 0.5f)
                         {
-                            SpawnWaypoint(hits[0].point);
-                        }
-                        else if (hits.Length > 1)
-                        {
-                            // Sort list by hight, highest to lowest.
-                            // Eliminate all fake hits.
-                            hits = SortHitList(hits);
+                        
 
-                            // Move side camera
-                            MoveSideCamera(GetAverageHitPos(hits));
+                            ClearGhostList();
 
-                            // Predict user choice from hits
-                            int predicted = GetPredictedIndex(hits);
+                            // Find all possible placements from click, mask off waypoints
+                            RaycastHit[] hits = Physics.RaycastAll(ray, 1000f, 9);
 
-                            for (int i = 0; i < hits.Length; i++)
+                            // If only one hit -> place waypoint
+                            if (hits.Length == 1)
                             {
-                                if (i == predicted)
+                                //SpawnWaypoint(hits[0].point);
+                                SpawnWaypointFromHitPos(hits[0].point);
+                            }
+                            else if (hits.Length > 1)
+                            {
+                                // Sort list by hight, highest to lowest.
+                                // Eliminate all fake hits.
+                                hits = SortHitList(hits);
+
+                                // Move side camera
+                                MoveSideCamera(GetAverageHitPos(hits));
+
+                                // Predict user choice from hits
+                                int predicted = GetPredictedIndex(hits);
+
+                                for (int i = 0; i < hits.Length; i++)
                                 {
-                                    SpawnWaypoint(hits[i].point);
-                                }
-                                else
-                                {
-                                    SpawnGhost(hits[i].point);
+                                    if (i == predicted)
+                                    {
+                                        //SpawnWaypoint(hits[i].point);
+                                        SpawnWaypointFromHitPos(hits[i].point);
+                                    }
+                                    else
+                                    {
+                                        SpawnGhost(hits[i].point);
+                                    }
                                 }
                             }
+                        }
+                    }
+                    else if (DEBUG_STATE == 1) // Connection state
+                    {
+                        // 1. Wait for two nodes to be selected
+                        // 2. Spawn a connection between them
+
+                        // Check if a waypoint is hit
+                        LayerMask mask = LayerMask.GetMask("Waypoints");
+                        RaycastHit hit;// = Physics.Raycast(ray, 1000f, mask);
+
+                        if (Physics.Raycast(ray, out hit, 1000f, mask))
+                        {
+                            con_selectedNodes[con_selectedCount++] = hit.collider.gameObject;
+                            hit.collider.gameObject.GetComponent<MeshRenderer>().material = material_highlight;
+
+                            if (con_selectedCount == 2)
+                            {
+                                // Create connection and reset
+                                oh.AddConnection(con_selectedNodes[0], con_selectedNodes[1]);
+                                ResetConnectionListener();
+                            }
+                        }
+                        else // If miss
+                        {
+                            // Reset highlight
+                            ResetConnectionListener();
                         }
                     }
                 }
@@ -157,7 +209,6 @@ public class pickingHandler : MonoBehaviour
                             ConvertWaypointToGhost(lastPlaced);
                             ConvertGhostToWaypoint(hit.collider.gameObject);
                         }
-                        //hit.collider.GetComponent<MeshRenderer>().material.color = new Color(0f, 0f, 0f);
                     }
                 }
             }
@@ -180,21 +231,16 @@ public class pickingHandler : MonoBehaviour
         ghostCount = 0;
     }
 
-    void SpawnWaypoint(Vector3 pos)
+    void SpawnWaypointFromHitPos(Vector3 pos)
     {
-        lastPlacedPos = pos;
+        lastHitPos = pos;
         pos += placeOffset;
-        GameObject obj = Instantiate(model_waypoint, pos, Quaternion.identity);
-        m_waypoints.Add(obj);
-
-        // Add to node system
-        obj.GetComponent<waypoint_script>().Node = gc.getNodeSystem().AddNode(pos.x, pos.y, pos.z);
-        nodePanel.UpdateUI();
+        GameObject obj = oh.AddWaypoint(pos);
 
         // Spawn connection between the two latest waypoints
-        if (m_waypoints.Count > 1)
+        if (oh.m_waypoints.Count > 1 && lastPlaced != null)
         {
-            CreateConnection(obj, lastPlaced);
+            oh.AddConnection(lastPlaced, obj);
         }
 
         lastPlaced = obj;
@@ -214,43 +260,22 @@ public class pickingHandler : MonoBehaviour
         Vector3 pos = ghost.transform.position - placeOffset;
         ClearGhostFromList(ghost);
         Destroy(ghost);
-        SpawnWaypoint(pos);
+        SpawnWaypointFromHitPos(pos);
     }
 
     void ConvertWaypointToGhost(GameObject waypoint)
     {
         Vector3 pos = waypoint.transform.position - placeOffset;
-        EraseWaypoint(waypoint);
+        //EraseWaypoint(waypoint);
+        ArrayList neighbors = oh.GetNeighbors(waypoint);
+
+        // In this implementation, ghosts only appears
+        // on NEW waypoints. Here, the new waypoint only
+        // has ONE connection.
+        lastPlaced = (GameObject)neighbors[0];
+
+        oh.RemoveWaypoint(waypoint);
         SpawnGhost(pos);
-    }
-
-    void EraseWaypoint(GameObject waypoint)
-    {
-        for (int i = 0; i < m_waypoints.Count; i++)
-        {
-            if (m_waypoints[i] == waypoint)
-            {
-                m_waypoints.RemoveAt(i);
-                lastPlaced = (GameObject)m_waypoints[i - 1];
-                break;
-            }
-        }
-
-        for (int i = m_connections.Count - 1; i >= 0; i--)
-        {
-            if (((Connection)m_connections[i]).endNode   == waypoint ||
-                ((Connection)m_connections[i]).startNode == waypoint)
-            {
-                Connection conToDestroy = (Connection)m_connections[i];
-                m_connections.RemoveAt(i);
-                gc.getNodeSystem().RemoveLine(conToDestroy.line.GetComponent<connection_script>().Line);
-                Destroy(conToDestroy.line);
-                break;
-            }
-        }
-
-        gc.getNodeSystem().RemoveNode(waypoint.GetComponent<waypoint_script>().Node);
-        Destroy(waypoint);
     }
 
     bool IsGhost(GameObject obj)
@@ -343,9 +368,6 @@ public class pickingHandler : MonoBehaviour
 
     void MoveSideCamera(Vector3 lookAt)
     {
-        // All waypoint models offsets upwards -> offset lookAt too
-        //cameraLookAt = lookAt;
-
         lookAt += placeOffset;
         Vector3 dirFromOrigo = new Vector3(lookAt.x, 0f, lookAt.z).normalized * 6f;
 
@@ -356,12 +378,12 @@ public class pickingHandler : MonoBehaviour
     int GetPredictedIndex(RaycastHit[] hits)
     {
         int closest = 0;
-        float closestDistance = GetHightDistance(hits[0].point, lastPlacedPos);
+        float closestDistance = GetHightDistance(hits[0].point, lastHitPos);
 
         float distance;
         for (int i = 1; i < hits.Length; i++)
         {
-            distance = GetHightDistance(hits[i].point, lastPlacedPos);
+            distance = GetHightDistance(hits[i].point, lastHitPos);
             if (distance < closestDistance)
             {
                 closest = i;
@@ -377,49 +399,32 @@ public class pickingHandler : MonoBehaviour
         return Mathf.Abs((v - u).y);
     }
 
-    void CreateConnection(GameObject start, GameObject end)
+    void ResetConnectionListener()
     {
-        Vector3 midPoint = (start.transform.position + end.transform.position) / 2f;
-        Vector3 direction = end.transform.position - start.transform.position;
-        float length = direction.magnitude;
-        direction = Vector3.Normalize(direction);
-
-        // Calculate forward
-        Vector3 forward;
-        if (direction == Vector3.up)
+        if (con_selectedNodes[0] != null)
         {
-            forward = Vector3.right;
+            con_selectedNodes[0].GetComponent<MeshRenderer>().material = material_waypoint;
+            con_selectedNodes[0] = null;
         }
-        else
+        if (con_selectedNodes[1] != null)
         {
-            forward = Vector3.Cross(direction, Vector3.Cross(Vector3.up, direction));
+            con_selectedNodes[1].GetComponent<MeshRenderer>().material = material_waypoint;
+            con_selectedNodes[1] = null;
         }
-
-        GameObject obj = Instantiate(model_connection, midPoint, Quaternion.LookRotation(forward, direction));
-        Vector3 newScale = obj.transform.localScale;
-        newScale.y = length;
-        obj.transform.localScale = newScale / 2f;
-
-        Connection newCon = new Connection();
-        newCon.startNode = start;
-        newCon.endNode = end;
-        newCon.line = obj;
-        m_connections.Add(newCon);
-
-        // Add to node system
-        obj.GetComponent<connection_script>().Line = gc.getNodeSystem().AddLine(
-            start.GetComponent<waypoint_script>().Node,
-            end.GetComponent<waypoint_script>().Node);
-        nodePanel.UpdateUI();
-
-        Debug.Log("Connection count: " + m_connections.Count);
+        con_selectedCount = 0;
     }
-
 
 
     ////
     //  Public access functions 
     ////
+
+    public void ChangeState(int state)
+    {
+        DEBUG_STATE = state;
+        con_selectedCount = 0;
+        lastPlaced = null;
+    }
 
     public void SetSelectedNode(NodeSystem.Node node)
     {

@@ -1145,16 +1145,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gc: {fileID: 343655722}
   nodePanel: {fileID: 1919270214}
-  model_waypoint: {fileID: 1508128866401026718, guid: 1cc021775ec9fb44bb6788001f7eeb1d,
-    type: 3}
   model_ghost: {fileID: 1508128866401026718, guid: 1f3a56c9f23dc0745a90d47b9e775df4,
     type: 3}
-  model_connection: {fileID: 5644457545064848833, guid: c315e1b88f5c9de45a014037c43a0e19,
-    type: 3}
+  material_waypoint: {fileID: 2100000, guid: 314efafddf5835f4b8465b11ef429dfe, type: 2}
+  material_highlight: {fileID: 2100000, guid: 4ad2acc3ca15d994fb7045ed3af0cbc5, type: 2}
+  oh: {fileID: 628180926}
   sideViewRect: {fileID: 161730760}
   ui_canvas: {fileID: 1828657551}
   camera_main: {fileID: 963194227}
   camera_side: {fileID: 1097161899}
+  DEBUG_STATE: 0
 --- !u!4 &162537930
 Transform:
   m_ObjectHideFlags: 0
@@ -4576,6 +4576,55 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 570195429}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &628180925
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 628180927}
+  - component: {fileID: 628180926}
+  m_Layer: 0
+  m_Name: ObjectHandler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &628180926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 628180925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 631ee698406ebfd4281cb4b14a07e8b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  model_waypoint: {fileID: 1508128866401026718, guid: 1cc021775ec9fb44bb6788001f7eeb1d,
+    type: 3}
+  model_connection: {fileID: 5644457545064848833, guid: c315e1b88f5c9de45a014037c43a0e19,
+    type: 3}
+  gc: {fileID: 343655722}
+  nodePanel: {fileID: 1919270214}
+--- !u!4 &628180927
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 628180925}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &633950503
 GameObject:
   m_ObjectHideFlags: 0
