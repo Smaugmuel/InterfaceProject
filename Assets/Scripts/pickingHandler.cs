@@ -167,37 +167,64 @@ public class pickingHandler : MonoBehaviour
                     }
                 }
             }
-            if (Input.GetMouseButtonDown(1))
+            if (Input.GetMouseButtonDown(1)) // Rightclick
             {
-
-                // MIN IDE ÄR ATT KUNNA FLYTTA KAMERAN MED LEFTCLICK OCH PÅ SÅSÄTT KUNNA TA BORT OBJECT UNDER SAKER
-
-
-                // Inside MAIN VIEW
-                if (mousePos.x < sideMin.x)
+                if(true) // ifstatement if removing objects
                 {
-                    Ray ray = Camera.main.ScreenPointToRay(mousePos);
-
-                    // Check if new position, include delta to eliminate -to close points-
-                    // mouseWorldPoint is necessary since camera can move and lastPlacedPos is in world space
-                    Vector3 mouseWorldPoint = camera_main.ViewportToWorldPoint(mousePos);
-                    Vector2 mouseWorldPoint2D = new Vector2(ray.origin.x, ray.origin.z); // Possible since ray direction is (0, -1, 0)
-                    Vector2 lastPlaced2D = new Vector2(lastPlacedPos.x, lastPlacedPos.z);
-                    
-                    ClearGhostList();
-
-                    RaycastHit hit;
-
-                    if (Physics.Raycast(ray, out hit, 1000f))
+                    // Inside MAIN VIEW
+                    if (mousePos.x < sideMin.x)
                     {
-                        if (IsWaypoint(hit.collider.gameObject))
-                        {
-                            EraseWaypoint(hit.collider.gameObject);
-                        }
-                        
-                    }
+                        Ray ray = Camera.main.ScreenPointToRay(mousePos);
 
+                        // Check if new position, include delta to eliminate -to close points-
+                        // mouseWorldPoint is necessary since camera can move and lastPlacedPos is in world space
+                        Vector3 mouseWorldPoint = camera_main.ViewportToWorldPoint(mousePos);
+                        Vector2 mouseWorldPoint2D = new Vector2(ray.origin.x, ray.origin.z); // Possible since ray direction is (0, -1, 0)
+                        Vector2 lastPlaced2D = new Vector2(lastPlacedPos.x, lastPlacedPos.z);
+
+                        ClearGhostList();
+
+                        RaycastHit hit;
+
+                        if (Physics.Raycast(ray, out hit, 1000f))
+                        {
+                            if (IsWaypoint(hit.collider.gameObject))
+                            {
+                                EraseWaypoint(hit.collider.gameObject);
+                            }
+                            else
+                            {
+                                // Move side camera if no objekt was hit
+                                MoveSideCamera(hit.point);
+                            }
+
+                        }
+
+                    }
+                    else if (mousePos.y < sideMax.y) // Inside SIDE VIEW (given !(mousePos.x < sideMin.x))
+                    {
+                        // Calculate local coordinates within side view -window-
+                        Vector2 localPos = mousePos - sideMin;
+
+                        // Convert coordinate to [0;1]
+                        localPos /= sideViewSize;
+
+                        // Raycast into world from side camera
+                        Ray ray = camera_side.ViewportPointToRay(localPos);
+                        RaycastHit hit;
+
+                        if (Physics.Raycast(ray, out hit, 1000f))
+                        {
+                            if (IsWaypoint(hit.collider.gameObject))
+                            {
+                                EraseWaypoint(hit.collider.gameObject);
+                            }
+                            //hit.collider.GetComponent<MeshRenderer>().material.color = new Color(0f, 0f, 0f);
+                        }
+                    }
                 }
+
+                
 
             }
         }
@@ -305,7 +332,8 @@ public class pickingHandler : MonoBehaviour
 
         if (foundConnectedWaypoint0 && foundConnectedWaypoint0)
         {
-            CreateConnection(connectedWaypoint0, connectedWaypoint1);
+            if(true) // If the state for creating a new connection
+                CreateConnection(connectedWaypoint0, connectedWaypoint1);
             lastPlaced = connectedWaypoint1;
         }
         else if (foundConnectedWaypoint0)
