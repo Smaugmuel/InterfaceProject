@@ -40,6 +40,11 @@ public class StateManager : MonoBehaviour
         
     }
 
+    public string CurrentState()
+    {
+        return stateNames[currentStateIndex];
+    }
+
     public int NameToIndex(string stateName)
     {
         int index = -1;
