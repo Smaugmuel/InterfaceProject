@@ -75,6 +75,7 @@ public class NodeSystem
             for (int i = 0; i < connections.Count; i++)
             {
                 neighbours.Add(connections[i].GetOther(this));
+                //neighbours.Add(connections[i].Nodes[1]);
             }
 
             return neighbours;

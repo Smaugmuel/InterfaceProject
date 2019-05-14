@@ -9,8 +9,6 @@ public class PathFinding : MonoBehaviour
 
     NodeSystem ns;
 
-
-
     List<NodeSystem.Node> CalulatePath(NodeSystem.Node start, NodeSystem.Node end)
     {
         List<NodeSystem.Node> openSet = new List<NodeSystem.Node>();
@@ -37,12 +35,8 @@ public class PathFinding : MonoBehaviour
                 }
             }
 
-            //print("Openset count b4 Remove: " + openSet.Count);
             openSet.Remove(currentNode);
-            //print("Openset count after Remove: " + openSet.Count);
-
             closedSet.Add(currentNode);
-            //print("Closedset count: " + closedSet.Count);
 
             if (currentNode == end)
             {
@@ -55,6 +49,9 @@ public class PathFinding : MonoBehaviour
 
                 foreach (NodeSystem.Node n in Neighbours)
                 {
+                    if (closedSet.Contains(n))
+                        continue;
+
                     if (n == currentNode)
                     {
                         print("Wrong: ");
@@ -68,17 +65,11 @@ public class PathFinding : MonoBehaviour
                         n.hCost = n.DistanceTo(end);
                         n.parrent = currentNode;
 
-                        //print(n.fCost);
-
                         if (!openSet.Contains(n))
                         {
                             openSet.Add(n);
-                            //print("Added");
                         }
-                        else
-                        {
-                            //print("Changed");
-                        }
+
                     }
                 }
             }
@@ -88,15 +79,20 @@ public class PathFinding : MonoBehaviour
         {
             print("Target Found");
             NodeSystem.Node backTrack = end;
-            while (backTrack != null)
+            int ragequit = 0;
+            while (backTrack != null && ragequit < 1000)
             {
-                print("Parrent Jump");
+                ragequit++;
 
                 actualPath.Add(backTrack);
                 backTrack = backTrack.parrent;
             }
 
-            //actualPath.Reverse();
+            if(ragequit>= 1000)
+            {
+                print("RageQuited after target found");
+            }
+            actualPath.Reverse();
 
             foreach (NodeSystem.Node n in actualPath)
             {
