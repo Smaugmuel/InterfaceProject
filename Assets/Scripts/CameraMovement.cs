@@ -108,9 +108,8 @@ public class CameraMovement : MonoBehaviour
             int halfScreenWidth = screenWidth / 2;
             int halfScreenHeight = screenHeight / 2;
 
-            // Only zoom when within the editor window
-            if (mousePos.x >= 0 && mousePos.x <= screenWidth &&
-                mousePos.y >= 0 && mousePos.y <= screenHeight)
+            // Determine where the cursor is when scrolling
+            if (IsScreenCoordWithinSceneView(mousePos))
             {
                 // Zoom
                 float orthoSize = topDownCam.orthographicSize;
