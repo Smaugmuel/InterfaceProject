@@ -3480,6 +3480,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   game: {fileID: 343655722}
+  TextPrefab: {fileID: 4249073996152965824, guid: 8a0675ce02735304b970cc49264ca8c2,
+    type: 3}
+  ghostCubePrefab: {fileID: 2920249294244647491, guid: 8f024d38dd6599a45bb8f7989db8ad5d,
+    type: 3}
+  originalMaterial: {fileID: 0}
+  Waypoint_layermask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &359237343
 GameObject:
   m_ObjectHideFlags: 0
@@ -5083,7 +5091,6 @@ MonoBehaviour:
   m_button2: {fileID: 1773717197}
   m_button3: {fileID: 201195656}
   m_button4: {fileID: 1750769590}
-  stateManagerObject: {fileID: 1950958865}
 --- !u!1 &679011573
 GameObject:
   m_ObjectHideFlags: 0
@@ -8810,7 +8817,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 359237344}
   m_Direction: 0
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.9999998
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -15654,6 +15661,27 @@ PrefabInstance:
       propertyPath: m_Alpha
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 143072, guid: 69988eeaf22db50428892b9cf8812ad4, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11499586, guid: 69988eeaf22db50428892b9cf8812ad4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 11500000, guid: 28be0bf4ba9cc9348aa766d4d78a4a16,
+        type: 3}
+    - target: {fileID: 11499586, guid: 69988eeaf22db50428892b9cf8812ad4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 11499586, guid: 69988eeaf22db50428892b9cf8812ad4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11499586, guid: 69988eeaf22db50428892b9cf8812ad4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 11405222, guid: 69988eeaf22db50428892b9cf8812ad4, type: 3}
       propertyPath: useLazySelection
       value: 1
@@ -15664,10 +15692,6 @@ PrefabInstance:
       objectReference: {fileID: 48499817}
     - target: {fileID: 11405222, guid: 69988eeaf22db50428892b9cf8812ad4, type: 3}
       propertyPath: useSelectionFollower
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 143072, guid: 69988eeaf22db50428892b9cf8812ad4, type: 3}
-      propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 11406896, guid: 69988eeaf22db50428892b9cf8812ad4, type: 3}
@@ -15753,23 +15777,6 @@ PrefabInstance:
     - target: {fileID: 11485486, guid: 69988eeaf22db50428892b9cf8812ad4, type: 3}
       propertyPath: m_Text
       value: Adv
-      objectReference: {fileID: 0}
-    - target: {fileID: 11499586, guid: 69988eeaf22db50428892b9cf8812ad4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 11500000, guid: 28be0bf4ba9cc9348aa766d4d78a4a16,
-        type: 3}
-    - target: {fileID: 11499586, guid: 69988eeaf22db50428892b9cf8812ad4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 11499586, guid: 69988eeaf22db50428892b9cf8812ad4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 11499586, guid: 69988eeaf22db50428892b9cf8812ad4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 69988eeaf22db50428892b9cf8812ad4, type: 3}
