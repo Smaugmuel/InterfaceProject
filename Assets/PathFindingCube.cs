@@ -6,6 +6,7 @@ public class PathFindingCube : MonoBehaviour
 {
     public List<NodeSystem.Node> path;
     int nextTarget = 1;
+    public float speed = 1;
 
     public void setPathPos(int nodeIndex)
     {
@@ -40,9 +41,9 @@ public class PathFindingCube : MonoBehaviour
 
         Vector3 targetPos = new Vector3(path[nextTarget].X, path[nextTarget].Y, path[nextTarget].Z);
         //print(targetPos);
-        transform.position += (targetPos-transform.position).normalized * Time.deltaTime * 2;
+        transform.position += (targetPos-transform.position).normalized * Time.deltaTime * speed;
 
-        if (Vector3.Distance(transform.position, targetPos) < 0.05)
+        if (Vector3.Distance(transform.position, targetPos) < 0.1)
             nextTarget++;
     }
 }

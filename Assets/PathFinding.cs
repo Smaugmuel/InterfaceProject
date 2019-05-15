@@ -158,11 +158,12 @@ public class PathFinding : MonoBehaviour
     {
         UnselectPath();
 
-        for (int i = 0; i < path.Count - 1; i++)
+        for (int i = 0; i < 1/*path.Count - 1*/; i++)
         {
             GameObject ghostCube = Instantiate(ghostCubePrefab);
             ghostCube.GetComponent<PathFindingCube>().path = path;
             ghostCube.GetComponent<PathFindingCube>().setPathPos(i);
+            ghostCube.GetComponent<PathFindingCube>().speed = 10;
             m_ghostCubes.Add(ghostCube);
         }
     }
