@@ -24,14 +24,14 @@ public class ButtonOptions : MonoBehaviour
     void ClickButtonOne()
     {
         StateManager.Instance.SetState("Node");
+        GUIHandler.Instance.SetActive(0, true);
         
-        // How to toggle
-        GUIHandler.Instance.SetActive(0, !GUIHandler.Instance.IsActive(0));
         //Debug.Log("Clicked button 1");
     }
     void ClickButtonTwo()
     {
         StateManager.Instance.SetState("Path");
+        GUIHandler.Instance.SetActive(0, false);
         //Debug.Log("Clicked button 2");
     }
     void ClickButtonThree()
@@ -41,6 +41,7 @@ public class ButtonOptions : MonoBehaviour
     void ClickButtonFour()
     {
         StateManager.Instance.SetState("Line");
+        GUIHandler.Instance.SetActive(0, false);
         //Debug.Log("Clicked button 4");
     }
 }

@@ -1523,8 +1523,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 695962493}
   m_HandleRect: {fileID: 695962492}
   m_Direction: 2
-  //m_Value: 0
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -5119,7 +5118,6 @@ MonoBehaviour:
   m_button2: {fileID: 1773717197}
   m_button3: {fileID: 201195656}
   m_button4: {fileID: 1750769590}
-  stateManagerObject: {fileID: 1950958865}
 --- !u!1 &679011573
 GameObject:
   m_ObjectHideFlags: 0
@@ -7140,7 +7138,7 @@ GameObject:
   - component: {fileID: 1015788510}
   - component: {fileID: 1015788512}
   m_Layer: 5
-  m_Name: 3D-camera_posImage
+  m_Name: Frustum
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8846,7 +8844,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 359237344}
   m_Direction: 0
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.9999999
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -9641,6 +9639,56 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1299374421}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1331471008
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1331471010}
+  - component: {fileID: 1331471009}
+  m_Layer: 0
+  m_Name: GUIHandler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1331471009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1331471008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5d49082241dfb844b8fec633a2ace45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  guiItems:
+  - item: {fileID: 1919270212}
+    isActive: 1
+  - item: {fileID: 161730759}
+    isActive: 1
+  - item: {fileID: 1015788508}
+    isActive: 1
+--- !u!4 &1331471010
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1331471008}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1348510166
 GameObject:
   m_ObjectHideFlags: 0
@@ -15458,6 +15506,7 @@ MonoBehaviour:
   - Node
   - Line
   - Path
+  initialStateIndex: 0
 --- !u!4 &1950958866
 Transform:
   m_ObjectHideFlags: 0
@@ -15470,7 +15519,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1976644685
 GameObject:
