@@ -6,6 +6,8 @@ public class StateManager : MonoBehaviour
 {
     public RectTransform radialMenuElements;
 
+    public static StateManager Instance { get; set; }
+
     /*
      * NOTE
      * Every section on the Radial menu will become a state
@@ -15,6 +17,14 @@ public class StateManager : MonoBehaviour
     private int nStates;
     private string[] stateNames;
     private int currentStateIndex;
+
+    void Awake()
+    {
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
+    }
 
     // Start is called before the first frame update
     void Start()

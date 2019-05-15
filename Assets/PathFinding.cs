@@ -118,6 +118,10 @@ public class PathFinding : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //print(StateManager.Instance.CurrentState());
+        if (StateManager.Instance.CurrentState() == "Path")
+            return;
+
         if (Input.GetKeyUp(KeyCode.A))
         {
             CalulatePath(ns.Nodes[0], ns.Nodes[ns.Nodes.Count - 1]);
