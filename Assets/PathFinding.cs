@@ -192,21 +192,21 @@ public class PathFinding : MonoBehaviour
             }
 
             SelectPath(path);
-            Clear();
+            //Clear();
+            m_selectedNodes.Clear();
+            //Dictionary<NodeSystem.Node, int> nVisitsToNode = new Dictionary<NodeSystem.Node, int>();
 
-            Dictionary<NodeSystem.Node, int> nVisitsToNode = new Dictionary<NodeSystem.Node, int>();
+            //for (int i = 0; i < path.Count; i++)
+            //{
+            //    if (!nVisitsToNode.ContainsKey(path[i]))
+            //        nVisitsToNode[path[i]] = 0;
 
-            for (int i = 0; i < path.Count; i++)
-            {
-                if (!nVisitsToNode.ContainsKey(path[i]))
-                    nVisitsToNode[path[i]] = 0;
-
-                GameObject text = Instantiate(TextPrefab);
-                text.transform.position = new Vector3(path[i].X + (nVisitsToNode[path[i]]++), path[i].Y, path[i].Z);
-                text.GetComponent<TextMesh>().text = ((nVisitsToNode[path[i]] > 1) ? "" : "") + i + 1;
-                m_textMeshes.Add(text);
-                //nVisitsToNode[path[i]]++;
-            }
+            //    GameObject text = Instantiate(TextPrefab);
+            //    text.transform.position = new Vector3(path[i].X + (nVisitsToNode[path[i]]++)*1.4f, path[i].Y, path[i].Z);
+            //    text.GetComponent<TextMesh>().text = /*((nVisitsToNode[path[i]] > 1) ? "" : "")*/ i + 1 + ",";
+            //    m_textMeshes.Add(text);
+            //    //nVisitsToNode[path[i]]++;
+            //}
         }
 
         if (Input.GetMouseButtonUp(0))
