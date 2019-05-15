@@ -1154,7 +1154,6 @@ MonoBehaviour:
   ui_canvas: {fileID: 1828657551}
   camera_main: {fileID: 963194227}
   camera_side: {fileID: 1097161899}
-  DEBUG_STATE: 0
 --- !u!4 &162537930
 Transform:
   m_ObjectHideFlags: 0
@@ -8843,8 +8842,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 359237345}
   m_HandleRect: {fileID: 359237344}
   m_Direction: 0
-  m_Value: 0
-  m_Size: 0.9999999
+  m_Value: 1
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
