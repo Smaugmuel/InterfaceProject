@@ -6,9 +6,6 @@ using UnityEngine.UI;
 public class ButtonOptions : MonoBehaviour
 {
     [SerializeField] private Button m_button1,m_button2,m_button3,m_button4;
-    [SerializeField] private StateManager stateManagerObject;
-
-    private StateManager stateManager;
 
     // Start is called before the first frame update
     void Start()
@@ -17,8 +14,6 @@ public class ButtonOptions : MonoBehaviour
         m_button2.onClick.AddListener(ClickButtonTwo);
         m_button3.onClick.AddListener(ClickButtonThree);
         m_button4.onClick.AddListener(ClickButtonFour);
-
-        stateManager = stateManagerObject.GetComponent<StateManager>();
     }
 
     // Update is called once per frame
@@ -28,12 +23,12 @@ public class ButtonOptions : MonoBehaviour
     }
     void ClickButtonOne()
     {
-        stateManager.SetState("Node");
+        StateManager.Instance.SetState("Node");
         //Debug.Log("Clicked button 1");
     }
     void ClickButtonTwo()
     {
-        stateManager.SetState("Path");
+        StateManager.Instance.SetState("Path");
         //Debug.Log("Clicked button 2");
     }
     void ClickButtonThree()
@@ -42,7 +37,7 @@ public class ButtonOptions : MonoBehaviour
     }
     void ClickButtonFour()
     {
-        stateManager.SetState("Line");
+        StateManager.Instance.SetState("Line");
         //Debug.Log("Clicked button 4");
     }
 }

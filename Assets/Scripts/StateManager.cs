@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class StateManager : MonoBehaviour
 {
     [SerializeField]
@@ -10,11 +11,22 @@ public class StateManager : MonoBehaviour
 
     private int currentStateIndex;
 
+    // Singleton
+    public static StateManager Instance { get; set; }
+    void Awake()
+    {
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
+    }
+
     // Start is called before the first frame update
     void Start()
     {
         currentStateIndex = initialStateIndex;
     }
+
 
     // Update is called once per frame
     void Update()
