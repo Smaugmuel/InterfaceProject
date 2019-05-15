@@ -1522,7 +1522,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 695962493}
   m_HandleRect: {fileID: 695962492}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -3431,6 +3431,7 @@ GameObject:
   m_Component:
   - component: {fileID: 343655723}
   - component: {fileID: 343655722}
+  - component: {fileID: 343655724}
   m_Layer: 0
   m_Name: MainGameController
   m_TagString: Untagged
@@ -3465,6 +3466,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &343655724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 343655721}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0633690fb6f81884a8a9bb63c8c03a36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  game: {fileID: 343655722}
+  TextPrefab: {fileID: 4249073996152965824, guid: 8a0675ce02735304b970cc49264ca8c2,
+    type: 3}
+  ghostCubePrefab: {fileID: 2920249294244647491, guid: 8f024d38dd6599a45bb8f7989db8ad5d,
+    type: 3}
+  originalMaterial: {fileID: 0}
+  Waypoint_layermask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &359237343
 GameObject:
   m_ObjectHideFlags: 0
@@ -8843,7 +8865,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 359237344}
   m_Direction: 0
   m_Value: 1
-  m_Size: 1
+  m_Size: 0.99999964
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

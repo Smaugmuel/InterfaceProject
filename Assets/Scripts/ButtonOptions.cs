@@ -23,6 +23,7 @@ public class ButtonOptions : MonoBehaviour
     }
     void ClickButtonOne()
     {
+        //StateManager.Instance.NameToIndex("Node")
         StateManager.Instance.SetState("Node");
         GUIHandler.Instance.SetActive(0, true);
         

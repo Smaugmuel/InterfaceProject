@@ -48,14 +48,37 @@ public class NodeSystem
 
     public class Node
     {
-        ArrayList connections = new ArrayList();
+        List<Line> connections = new List<Line>();
         float x, y, z;
+
+        //Temp variables for pathfinding
+        public float hCost;
+        public float gCost;
+        public Node parrent;
+
+        public float fCost
+        {
+            get { return hCost + gCost; }
+        }
 
         public Node(float _x, float _y, float _z)
         {
             x = _x;
             y = _y;
             z = _z;
+        }
+
+        public List<Node> GetNeighbours()
+        {
+            List<Node> neighbours = new List<Node>();
+
+            for (int i = 0; i < connections.Count; i++)
+            {
+                neighbours.Add(connections[i].GetOther(this));
+                //neighbours.Add(connections[i].Nodes[1]);
+            }
+
+            return neighbours;
         }
 
         public void addConnection(Line connection)
@@ -68,7 +91,7 @@ public class NodeSystem
             connections.Add(new Line(n1, n2, _type));
         }
 
-        public ArrayList Connections
+        public List<Line> Connections
         {
             get { return connections; }
         }
@@ -116,6 +139,9 @@ public class NodeSystem
 
         public Line(Node n1, Node n2, int _type = 0)
         {
+            if (n1 == n2 || n1 == null || n2 == null)
+                MonoBehaviour.print("Something is wrong in Line constructor!");
+
             type = _type;
             nodes[0] = n1;
             nodes[1] = n2;
@@ -129,6 +155,10 @@ public class NodeSystem
             get { return nodes; }
         }
 
+        public Node GetOther(Node n) {
+            return (nodes[0] == n) ? nodes[1] : nodes[0];
+        }
+
         public int Type
         {
             get { return type; }
@@ -137,8 +167,8 @@ public class NodeSystem
     }
 
     //===========NODE SYSTEM=============
-    ArrayList nodes = new ArrayList();
-    ArrayList lines = new ArrayList();
+    List<Node> nodes = new List<Node>();
+    List<Line> lines = new List<Line>();
 
     public NodeSystem()
     {
@@ -174,7 +204,7 @@ public class NodeSystem
     public void RemoveNode(Node node)
     {
         //Get All connections to this node
-        ArrayList nodeConnections = node.Connections;
+        List<Line> nodeConnections = node.Connections;
 
         if(_nodesystemDebug)
             MonoBehaviour.print("(RemoveNode) Count: " + nodeConnections.Count);
@@ -185,7 +215,7 @@ public class NodeSystem
             if (_nodesystemDebug)
                 MonoBehaviour.print("(RemoveNode) i: " + i);
 
-            Line connectionToRemove = (Line)nodeConnections[i];
+            Line connectionToRemove = nodeConnections[i];
 
         //For Each Connection, Remove itself from the 2 connected nodes
             connectionToRemove.Nodes[0].Connections.Remove(connectionToRemove);
@@ -256,12 +286,12 @@ public class NodeSystem
         return n;
     }
 
-    public ArrayList Nodes
+    public List<Node> Nodes
     {
         get { return nodes; }
     }
 
-    public ArrayList Lines
+    public List<Line> Lines
     {
         get { return lines; }
     }
