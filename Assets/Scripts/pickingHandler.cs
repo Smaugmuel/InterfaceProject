@@ -14,7 +14,6 @@ public class pickingHandler : MonoBehaviour
     private Vector3 placeOffset = new Vector3(0f, 1f, 0f);
     public static Vector2 cameraLookAt = new Vector2(0f, 0f);
 
-
     // Variables for node system usage
     [SerializeField]
     public GameController gc;
@@ -68,11 +67,14 @@ public class pickingHandler : MonoBehaviour
 
     void Update()
     {
-        if (!Input.GetKey("space")) 
+        if (StateManager.Instance.CurrentState() != "Node")
+            return;
+
+        if (!Input.GetKey("space"))
         {
-//<<<<<<< HEAD
-//            if (Input.GetMouseButtonDown(0))
-//=======
+            //<<<<<<< HEAD
+            //            if (Input.GetMouseButtonDown(0))
+            //=======
             // Check if mouse pos is MAIN VIEW or SIDE VIEW (exclude node list)
             Vector2 mousePos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
 
@@ -86,7 +88,7 @@ public class pickingHandler : MonoBehaviour
             // Inside MAIN VIEW
             //if (mousePos.x < sideMin.x)
             if (Input.GetMouseButtonDown(0))
-//>>>>>>> lhure-frustum-from-camera
+            //>>>>>>> lhure-frustum-from-camera
             {
                 // Check if mouse pos is MAIN VIEW or SIDE VIEW (exclude node list)
                 //Vector2 mousePos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
@@ -115,7 +117,7 @@ public class pickingHandler : MonoBehaviour
                         // Find all possible placements from click, mask waypoints
                         RaycastHit[] hits = Physics.RaycastAll(ray, 1000f, 9);
 
-                       
+
 
                         // If only one hit -> place waypoint
                         if (hits.Length == 1)
@@ -173,9 +175,10 @@ public class pickingHandler : MonoBehaviour
                     }
                 }
             }
+
             if (Input.GetMouseButtonDown(1)) // Rightclick
             {
-                if(true) // ifstatement if removing objects
+                if (true) // ifstatement if removing objects
                 {
                     // Inside MAIN VIEW
                     if (mousePos.x < sideMin.x)
@@ -230,7 +233,7 @@ public class pickingHandler : MonoBehaviour
                     }
                 }
 
-                
+
 
             }
         }
@@ -266,9 +269,9 @@ public class pickingHandler : MonoBehaviour
         // Spawn connection between the two latest waypoints
         if (m_waypoints.Count > 1 && !lastPlacedRestart)
         {
-            for (int i = 0; i < m_waypoints.Count-1; i++)
+            for (int i = 0; i < m_waypoints.Count - 1; i++)
             {
-                if(Random.Range(0,100) > 50)
+                if (Random.Range(0, 100) > 50)
                     CreateConnection(obj, (GameObject)m_waypoints[i]);
             }
         }
@@ -319,10 +322,10 @@ public class pickingHandler : MonoBehaviour
         bool foundConnectedWaypoint1 = false;
         for (int i = m_connections.Count - 1; i >= 0; i--)
         {
-            if (((Connection)m_connections[i]).endNode   == waypoint ||
+            if (((Connection)m_connections[i]).endNode == waypoint ||
                 ((Connection)m_connections[i]).startNode == waypoint)
             {
-                
+
                 if (((Connection)m_connections[i]).endNode == waypoint)
                 {
                     connectedWaypoint0 = ((Connection)m_connections[i]).startNode;
@@ -335,14 +338,14 @@ public class pickingHandler : MonoBehaviour
                 }
 
                 RemoveConnection(i);
-                
+
                 //break;
             }
         }
 
         if (foundConnectedWaypoint0 && foundConnectedWaypoint0)
         {
-            if(true) // If the state for creating a new connection
+            if (true) // If the state for creating a new connection
                 CreateConnection(connectedWaypoint0, connectedWaypoint1);
             lastPlaced = connectedWaypoint1;
         }
@@ -386,9 +389,9 @@ public class pickingHandler : MonoBehaviour
     }
 
     bool IsWaypoint(GameObject obj)
-    {   
+    {
         //if (m_waypoints.Contains(obj))
-            
+
         return m_waypoints.Contains(obj);
     }
 
@@ -473,12 +476,12 @@ public class pickingHandler : MonoBehaviour
         //cameraLookAt = lookAt;
 
         lookAt += placeOffset;
-        
+
         Vector3 dirFromOrigo = new Vector3(lookAt.x, 0f, lookAt.z).normalized * 6f;
 
         camera_side.transform.position = lookAt + dirFromOrigo + new Vector3(0, 3f, 0f);
         camera_side.transform.LookAt(lookAt);
-        
+
         sideCameraLookAt = lookAt;
     }
 
@@ -543,7 +546,7 @@ public class pickingHandler : MonoBehaviour
 
         Debug.Log("Connection count: " + m_connections.Count);
     }
-    
+
     ////
     //  Public access functions 
     ////

@@ -7,10 +7,22 @@ public class PathFinding : MonoBehaviour
     [SerializeField]
     GameController game;
 
+    [SerializeField]
+    GameObject TextPrefab;
+    [SerializeField]
+    GameObject ghostCubePrefab;
+
     NodeSystem ns;
 
-    NodeSystem.Node[] selectedNodes = new NodeSystem.Node[2];
-    int nSelectedNodes = 0;
+    //NodeSystem.Node[] selectedNodes = new NodeSystem.Node[2];
+    //int nSelectedNodes = 0;
+
+    List<NodeSystem.Node> m_selectedNodes = new List<NodeSystem.Node>();
+    List<GameObject> m_textMeshes = new List<GameObject>();
+    List<GameObject> m_ghostCubes = new List<GameObject>();
+
+    [SerializeField]
+    Material originalMaterial;
 
     [SerializeField]
     LayerMask Waypoint_layermask;
@@ -51,7 +63,7 @@ public class PathFinding : MonoBehaviour
             else
             {
                 List<NodeSystem.Node> Neighbours = currentNode.GetNeighbours();
-                print("Neighbours: " + Neighbours.Count);
+                //print("Neighbours: " + Neighbours.Count);
 
                 foreach (NodeSystem.Node n in Neighbours)
                 {
@@ -98,12 +110,13 @@ public class PathFinding : MonoBehaviour
             {
                 print("RageQuited after target found");
             }
+
             actualPath.Reverse();
 
-            foreach (NodeSystem.Node n in actualPath)
-            {
-                print(n.X + ", " + n.Y + ", " + n.Z);
-            }
+            //foreach (NodeSystem.Node n in actualPath)
+            //{
+            //    print(n.X + ", " + n.Y + ", " + n.Z);
+            //}
 
                 return actualPath;
         }
@@ -121,25 +134,90 @@ public class PathFinding : MonoBehaviour
         ns = game.getNodeSystem();
     }
 
+    void Clear()
+    {
+        foreach (GameObject obj in m_textMeshes)
+        {
+            Destroy(obj);
+        }
+
+        m_textMeshes.Clear();
+        m_selectedNodes.Clear();
+    }
+
+    void UnselectPath()
+    {
+        for (int i = 0; i < m_ghostCubes.Count; i++)
+        {
+            Destroy(m_ghostCubes[i]);
+        }
+        m_ghostCubes.Clear();
+    }
+
+    void SelectPath(List<NodeSystem.Node> path)
+    {
+        UnselectPath();
+
+        for (int i = 0; i < path.Count - 1; i++)
+        {
+            GameObject ghostCube = Instantiate(ghostCubePrefab);
+            ghostCube.GetComponent<PathFindingCube>().path = path;
+            ghostCube.GetComponent<PathFindingCube>().setPathPos(i);
+            m_ghostCubes.Add(ghostCube);
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
         if (StateManager.Instance.CurrentState() != "Path")
             return;
 
+        if (Input.GetKeyUp(KeyCode.Escape))
+        {
+            Clear();
+        }
+
+        if (Input.GetKeyUp(KeyCode.Return))
+        {
+            List<NodeSystem.Node> path = new List<NodeSystem.Node>();
+            for(int i = 0; i < m_selectedNodes.Count-1; i++)
+            {
+                path.AddRange(CalulatePath(m_selectedNodes[i], m_selectedNodes[i+1]));
+
+                //Remove Duplications
+                if (i != m_selectedNodes.Count - 2)
+                    path.RemoveAt(path.Count - 1);
+            }
+
+            SelectPath(path);
+
+            //print("Nodes needed to visit: " + path.Count);
+            //for(int i = 0; i < path.Count; i++)
+            //{
+            //    print(path[i].X + ", " + path[i].Y + ", " + path[i].Z);
+            //}
+
+            Clear();
+        }
+
         if (Input.GetMouseButtonUp(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit, 1000f, Waypoint_layermask))
+            if (Physics.Raycast(ray, out hit, 1000f, LayerMask.GetMask("Waypoints")))
             {
+                print("Hit");
+
                 bool found = false;
+                //hit.collider.GetComponent<MeshRenderer>().material.color = Color.cyan;
+
                 NodeSystem.Node nodeHit = hit.collider.GetComponent<waypoint_script>().Node;
 
-                for (int i = 0; i < nSelectedNodes && i < selectedNodes.Length; i++)
+                for (int i = 0; i < m_selectedNodes.Count && !found; i++)
                 {
-                    if (selectedNodes[i] == nodeHit)
+                    if (m_selectedNodes[i] == nodeHit)
                     {
                         print("Found");
                         found = true;
@@ -148,19 +226,23 @@ public class PathFinding : MonoBehaviour
 
                 if (!found)
                 {
-                    print("Not Found: " + nSelectedNodes);
-                    selectedNodes[nSelectedNodes++] = nodeHit;
+                    m_selectedNodes.Add(nodeHit);
+                    GameObject text = Instantiate(TextPrefab);
+                    text.transform.position = new Vector3(nodeHit.X, nodeHit.Y, nodeHit.Z);
+                    text.GetComponent<TextMesh>().text = "" + m_selectedNodes.Count;
+                    m_textMeshes.Add(text);
 
-                    if (nSelectedNodes == 2)
-                    {
-                        CalulatePath(selectedNodes[0], selectedNodes[1]);
-                        nSelectedNodes = 0;
-                    }
+                    //if (nSelectedNodes == 2)
+                    //{
+                    //    CalulatePath(selectedNodes[0], selectedNodes[1]);
+                    //    nSelectedNodes = 0;
+                    //}
                 }
             }
             else
             {
-                nSelectedNodes = 0;
+                //nSelectedNodes = 0;
+                print("No Hit");
             }
         }
 
