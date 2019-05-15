@@ -38,6 +38,7 @@ public class pickingHandler : MonoBehaviour
     // To keep track of positioning prediction
     private Vector3 lastPlacedPos;
     private GameObject lastPlaced;
+    private bool lastPlacedRestart;
 
     // Variables for position calculation
     public RectTransform sideViewRect;
@@ -53,6 +54,7 @@ public class pickingHandler : MonoBehaviour
         // Default has a high y value to "predict" the first app interaction
         // to be placed on the highest position possible.
         lastPlacedPos = new Vector3(0f, 100f, 0f);
+        lastPlacedRestart = true;
         ClearGhostList();
         standardColor = Color.blue;
         selectColor = Color.green;
@@ -108,10 +110,14 @@ public class pickingHandler : MonoBehaviour
                         // Find all possible placements from click, mask waypoints
                         RaycastHit[] hits = Physics.RaycastAll(ray, 1000f, 9);
 
+                       
+
                         // If only one hit -> place waypoint
                         if (hits.Length == 1)
                         {
                             SpawnWaypoint(hits[0].point);
+
+
                         }
                         else if (hits.Length > 1)
                         {
@@ -162,6 +168,66 @@ public class pickingHandler : MonoBehaviour
                     }
                 }
             }
+            if (Input.GetMouseButtonDown(1)) // Rightclick
+            {
+                if(true) // ifstatement if removing objects
+                {
+                    // Inside MAIN VIEW
+                    if (mousePos.x < sideMin.x)
+                    {
+                        Ray ray = Camera.main.ScreenPointToRay(mousePos);
+
+                        // Check if new position, include delta to eliminate -to close points-
+                        // mouseWorldPoint is necessary since camera can move and lastPlacedPos is in world space
+                        Vector3 mouseWorldPoint = camera_main.ViewportToWorldPoint(mousePos);
+                        Vector2 mouseWorldPoint2D = new Vector2(ray.origin.x, ray.origin.z); // Possible since ray direction is (0, -1, 0)
+                        Vector2 lastPlaced2D = new Vector2(lastPlacedPos.x, lastPlacedPos.z);
+
+                        ClearGhostList();
+
+                        RaycastHit hit;
+
+                        if (Physics.Raycast(ray, out hit, 1000f))
+                        {
+                            if (IsWaypoint(hit.collider.gameObject))
+                            {
+                                EraseWaypoint(hit.collider.gameObject);
+                            }
+                            else
+                            {
+                                // Move side camera if no objekt was hit
+                                MoveSideCamera(hit.point);
+                            }
+
+                        }
+
+                    }
+                    else if (mousePos.y < sideMax.y) // Inside SIDE VIEW (given !(mousePos.x < sideMin.x))
+                    {
+                        // Calculate local coordinates within side view -window-
+                        Vector2 localPos = mousePos - sideMin;
+
+                        // Convert coordinate to [0;1]
+                        localPos /= sideViewSize;
+
+                        // Raycast into world from side camera
+                        Ray ray = camera_side.ViewportPointToRay(localPos);
+                        RaycastHit hit;
+
+                        if (Physics.Raycast(ray, out hit, 1000f))
+                        {
+                            if (IsWaypoint(hit.collider.gameObject))
+                            {
+                                EraseWaypoint(hit.collider.gameObject);
+                            }
+                            //hit.collider.GetComponent<MeshRenderer>().material.color = new Color(0f, 0f, 0f);
+                        }
+                    }
+                }
+
+                
+
+            }
         }
     }
 
@@ -193,7 +259,7 @@ public class pickingHandler : MonoBehaviour
         nodePanel.UpdateUI();
 
         // Spawn connection between the two latest waypoints
-        if (m_waypoints.Count > 1)
+        if (m_waypoints.Count > 1 && !lastPlacedRestart)
         {
             for (int i = 0; i < m_waypoints.Count-1; i++)
             {
@@ -203,6 +269,7 @@ public class pickingHandler : MonoBehaviour
         }
 
         lastPlaced = obj;
+        lastPlacedRestart = false;
     }
 
     void SpawnGhost(Vector3 pos)
@@ -236,26 +303,68 @@ public class pickingHandler : MonoBehaviour
             if (m_waypoints[i] == waypoint)
             {
                 m_waypoints.RemoveAt(i);
-                lastPlaced = (GameObject)m_waypoints[i - 1];
                 break;
             }
         }
 
+        // Assigns first and last waypoints as placeholders
+        GameObject connectedWaypoint0 = new GameObject();
+        GameObject connectedWaypoint1 = new GameObject();
+        bool foundConnectedWaypoint0 = false;
+        bool foundConnectedWaypoint1 = false;
         for (int i = m_connections.Count - 1; i >= 0; i--)
         {
             if (((Connection)m_connections[i]).endNode   == waypoint ||
                 ((Connection)m_connections[i]).startNode == waypoint)
             {
-                Connection conToDestroy = (Connection)m_connections[i];
-                m_connections.RemoveAt(i);
-                gc.getNodeSystem().RemoveLine(conToDestroy.line.GetComponent<connection_script>().Line);
-                Destroy(conToDestroy.line);
-                break;
+                
+                if (((Connection)m_connections[i]).endNode == waypoint)
+                {
+                    connectedWaypoint0 = ((Connection)m_connections[i]).startNode;
+                    foundConnectedWaypoint0 = true;
+                }
+                else
+                {
+                    connectedWaypoint1 = ((Connection)m_connections[i]).endNode;
+                    foundConnectedWaypoint1 = true;
+                }
+
+                RemoveConnection(i);
+                
+                //break;
             }
         }
 
+        if (foundConnectedWaypoint0 && foundConnectedWaypoint0)
+        {
+            if(true) // If the state for creating a new connection
+                CreateConnection(connectedWaypoint0, connectedWaypoint1);
+            lastPlaced = connectedWaypoint1;
+        }
+        else if (foundConnectedWaypoint0)
+            lastPlaced = connectedWaypoint0;
+        else if (foundConnectedWaypoint1)
+            lastPlaced = connectedWaypoint1;
+        else if (m_waypoints.Count > 1)
+        {
+            lastPlacedRestart = true;
+        }
+
+
         gc.getNodeSystem().RemoveNode(waypoint.GetComponent<waypoint_script>().Node);
         Destroy(waypoint);
+
+        nodePanel.UpdateUI();
+
+    }
+    void RemoveConnection(int index)
+    {
+        Debug.Log("Connection " + index + " is getting removed");
+
+        Connection conToDestroy = (Connection)m_connections[index];
+        m_connections.RemoveAt(index);
+        gc.getNodeSystem().RemoveLine(conToDestroy.line.GetComponent<connection_script>().Line);
+        Destroy(conToDestroy.line);
     }
 
     bool IsGhost(GameObject obj)
@@ -269,6 +378,13 @@ public class pickingHandler : MonoBehaviour
         }
 
         return false;
+    }
+
+    bool IsWaypoint(GameObject obj)
+    {   
+        //if (m_waypoints.Contains(obj))
+            
+        return m_waypoints.Contains(obj);
     }
 
     void ClearGhostFromList(GameObject ghost)
@@ -419,9 +535,7 @@ public class pickingHandler : MonoBehaviour
 
         Debug.Log("Connection count: " + m_connections.Count);
     }
-
-
-
+    
     ////
     //  Public access functions 
     ////
