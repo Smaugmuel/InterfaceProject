@@ -4,13 +4,27 @@ using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
 {
-    private Vector3 mousePosPrev;
-    private Vector3 cameraPosPrev;
+    // Cameras set in Unity
+    public Camera topDownCam;
+    public Camera sideCam;
 
+    public RectTransform sideCamViewRect;
+    public Canvas ui_canvas;
+
+    // General settings set in Unity
     public float orthoMin = 1.0f;
     public float orthoMax = 16.0f;
-    public float movementSpeed = 0.05f;
-    public float zoomMovementSpeed = 3.0f;
+    public float topDownMovementSpeed = 0.05f;
+    public float topDownZoomMovementSpeed = 3.0f;
+
+    private enum CameraLocation { TOP_DOWN, SIDE, NONE };
+
+    private CameraLocation currentCamType;
+
+    private Vector2 mousePosBegin;
+    private Vector3 camPosBegin;
+
+    
 
     // Start is called before the first frame update
     void Start()
@@ -30,22 +44,59 @@ public class CameraMovement : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(2))
             {
-                mousePosPrev = Input.mousePosition;
-                cameraPosPrev = Camera.main.GetComponent<Transform>().position;
+                Vector2 mousePos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+                
+                // Determine where the cursor is when MMB is pressed
+                if (IsScreenCoordWithinSceneView(mousePos))
+                {
+                    currentCamType = CameraLocation.TOP_DOWN;
+                    camPosBegin = topDownCam.transform.position;
+                }
+                else if (IsScreenCoordWithinSideCamView(mousePos))
+                {
+                    currentCamType = CameraLocation.SIDE;
+                    camPosBegin = sideCam.transform.position;
+                }
+                else
+                {
+                    currentCamType = CameraLocation.NONE;
+                }
+
+                mousePosBegin = mousePos;
             }
 
-            Vector3 movement = Input.mousePosition - mousePosPrev;
+            // Calculate mouse movement while holding down MMB
+            Vector2 mouseMovement = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+            mouseMovement -= mousePosBegin;
 
-            // Turn y-movement into z-movement
-            movement.z = movement.y;
-            movement.y = 0.0f;
+            // Take action based on where the cursor was and how much it has moved 
+            if (currentCamType == CameraLocation.TOP_DOWN)
+            {
+                // Turn y-movement on the screen into z-movement in the scene
+                Vector3 camMovement = new Vector3(mouseMovement.x, 0.0f, mouseMovement.y);
+                
+                // Scale movement speed based on how zoomed the camera is
+                float scaledMovementSpeed = topDownMovementSpeed * (topDownCam.orthographicSize / (orthoMax - orthoMin));
 
-            // Flip movement controls and apply speed
-            movement *= -movementSpeed;
+                // Flip movement and apply the speed
+                camMovement *= -scaledMovementSpeed;
 
-            movement *= (Camera.main.orthographicSize / (orthoMax - orthoMin));
+                topDownCam.transform.position = camPosBegin + camMovement;
+            }
+            else if (currentCamType == CameraLocation.SIDE)
+            {
+                Vector3 toTarget = pickingHandler.sideCameraLookAt - camPosBegin;
 
-            Camera.main.transform.position = cameraPosPrev + movement;
+                float angle = mouseMovement.x * 0.05f;
+                
+                Vector3 toTargetNew = new Vector3();
+                toTargetNew.x = toTarget.x *  Mathf.Cos(angle) + toTarget.z * Mathf.Sin(angle);
+                toTargetNew.y = toTarget.y;
+                toTargetNew.z = toTarget.x * -Mathf.Sin(angle) + toTarget.z * Mathf.Cos(angle);
+
+                sideCam.transform.position = camPosBegin + toTarget - toTargetNew;
+                sideCam.transform.LookAt(pickingHandler.sideCameraLookAt);
+            }
         }
     }
     void ManageZoom()
@@ -65,7 +116,7 @@ public class CameraMovement : MonoBehaviour
                 mousePos.y >= 0 && mousePos.y <= screenHeight)
             {
                 // Zoom
-                float orthoSize = Camera.main.orthographicSize;
+                float orthoSize = topDownCam.orthographicSize;
                 orthoSize -= scrolled;
 
                 // Zoom limits
@@ -74,7 +125,7 @@ public class CameraMovement : MonoBehaviour
                 //Mathf.Clamp(orthoSize, 1.0f, 16.0f);      // <-- Did not work
 
                 // Set zoom value
-                Camera.main.orthographicSize = orthoSize;
+                topDownCam.orthographicSize = orthoSize;
 
 
                 // Move camera based on mouse pointer location
@@ -107,7 +158,7 @@ public class CameraMovement : MonoBehaviour
                 Vector3 movement = new Vector3(posPercentageX, 0.0f, posPercentageY);
 
 
-                movement *= zoomMovementSpeed;
+                movement *= topDownZoomMovementSpeed;
 
                 movement *= (orthoSize / (orthoMax - orthoMin));
 
@@ -116,14 +167,52 @@ public class CameraMovement : MonoBehaviour
 
                 // Stop movement when max or min zoomed
                 if (orthoSize == orthoMin || orthoSize == orthoMax) movement *= 0.0f;
-                Camera.main.transform.position += movement;
-                
-                Debug.Log(
-                    screenWidth.ToString() + "x" + screenHeight.ToString() +
-                    ", (" + mousePos.x + ", " + mousePos.y + ")" +
-                    "(" + posPercentageX.ToString() + ", " + posPercentageY.ToString() + ")"
-                    );
+                topDownCam.transform.position += movement;
             }
         }
+    }
+
+    float SidePanelLeftEdge()
+    {
+        float sideViewWidth = sideCamViewRect.rect.width * ui_canvas.scaleFactor;
+        
+        return (sideCamViewRect.position.x - sideViewWidth / 2f);
+    }
+    bool IsScreenCoordWithinWindow(Vector2 coord)
+    {
+        return (coord.x >= 0 && coord.x <= Screen.width && coord.y >= 0 && coord.y <= Screen.height);
+    }
+    bool IsScreenCoordWithinSidePanel(Vector2 coord)
+    {
+        return (
+            IsScreenCoordWithinWindow(coord) &&
+            coord.x >= SidePanelLeftEdge()
+            );
+    }
+    bool IsScreenCoordWithinSceneView(Vector2 coord)
+    {
+        return (
+            IsScreenCoordWithinWindow(coord) &&
+            coord.x < SidePanelLeftEdge()
+            );
+    }
+    bool IsScreenCoordWithinSideCamView(Vector2 coord)
+    {
+        Vector2 sideViewSize = new Vector2(sideCamViewRect.rect.width, sideCamViewRect.rect.height);
+        sideViewSize *= ui_canvas.scaleFactor;
+
+        Vector2 sideViewPosition = new Vector2(sideCamViewRect.position.x, sideCamViewRect.position.y);
+
+        Vector2 bottomLeft = sideViewPosition - sideViewSize / 2f;
+        Vector2 topRight = sideViewPosition + sideViewSize / 2f;
+
+        return (coord.x >= bottomLeft.x && coord.x <= topRight.x && coord.y >= bottomLeft.y && coord.y <= topRight.y);
+    }
+    bool IsScreenCoordWithinListView(Vector2 coord)
+    {
+        return (
+            IsScreenCoordWithinSidePanel(coord) &&
+            !IsScreenCoordWithinSideCamView(coord)
+            );
     }
 }
