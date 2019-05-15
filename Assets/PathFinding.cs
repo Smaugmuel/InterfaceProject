@@ -9,6 +9,12 @@ public class PathFinding : MonoBehaviour
 
     NodeSystem ns;
 
+    NodeSystem.Node[] selectedNodes = new NodeSystem.Node[2];
+    int nSelectedNodes = 0;
+
+    [SerializeField]
+    LayerMask Waypoint_layermask;
+
     List<NodeSystem.Node> CalulatePath(NodeSystem.Node start, NodeSystem.Node end)
     {
         List<NodeSystem.Node> openSet = new List<NodeSystem.Node>();
@@ -118,9 +124,45 @@ public class PathFinding : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //print(StateManager.Instance.CurrentState());
-        if (StateManager.Instance.CurrentState() == "Path")
+        if (StateManager.Instance.CurrentState() != "Path")
             return;
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit, 1000f, Waypoint_layermask))
+            {
+                bool found = false;
+                NodeSystem.Node nodeHit = hit.collider.GetComponent<waypoint_script>().Node;
+
+                for (int i = 0; i < nSelectedNodes && i < selectedNodes.Length; i++)
+                {
+                    if (selectedNodes[i] == nodeHit)
+                    {
+                        print("Found");
+                        found = true;
+                    }
+                }
+
+                if (!found)
+                {
+                    print("Not Found: " + nSelectedNodes);
+                    selectedNodes[nSelectedNodes++] = nodeHit;
+
+                    if (nSelectedNodes == 2)
+                    {
+                        CalulatePath(selectedNodes[0], selectedNodes[1]);
+                        nSelectedNodes = 0;
+                    }
+                }
+            }
+            else
+            {
+                nSelectedNodes = 0;
+            }
+        }
 
         if (Input.GetKeyUp(KeyCode.A))
         {

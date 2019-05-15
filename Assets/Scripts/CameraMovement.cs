@@ -4,18 +4,15 @@ using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
 {
-    // Cameras set in Unity
-    public Camera topDownCam;
-    public Camera sideCam;
+    [SerializeField] private Camera topDownCam;
+    [SerializeField] private Camera sideCam;
+    [SerializeField] private RectTransform sideCamViewRect;
+    [SerializeField] private Canvas ui_canvas;
+    [SerializeField] private float orthoMin = 1.0f;
+    [SerializeField] private float orthoMax = 16.0f;
+    [SerializeField] private float topDownMovementSpeed = 0.05f;
+    [SerializeField] private float topDownZoomMovementSpeed = 3.0f;
 
-    public RectTransform sideCamViewRect;
-    public Canvas ui_canvas;
-
-    // General settings set in Unity
-    public float orthoMin = 1.0f;
-    public float orthoMax = 16.0f;
-    public float topDownMovementSpeed = 0.05f;
-    public float topDownZoomMovementSpeed = 3.0f;
 
     private enum CameraLocation { TOP_DOWN, SIDE, NONE };
 
