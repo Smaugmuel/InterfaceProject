@@ -24,6 +24,9 @@ public class ButtonOptions : MonoBehaviour
     void ClickButtonOne()
     {
         StateManager.Instance.SetState("Node");
+        
+        // How to toggle
+        GUIHandler.Instance.SetActive(0, !GUIHandler.Instance.IsActive(0));
         //Debug.Log("Clicked button 1");
     }
     void ClickButtonTwo()

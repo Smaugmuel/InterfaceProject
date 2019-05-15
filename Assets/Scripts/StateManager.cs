@@ -5,9 +5,8 @@ using UnityEngine;
 
 public class StateManager : MonoBehaviour
 {
-    [SerializeField]
-    private List<string> states;
-    private int initialStateIndex = 0;
+    [SerializeField] private List<string> states;
+    [SerializeField] private int initialStateIndex = 0;
 
     private int currentStateIndex;
 
@@ -26,7 +25,6 @@ public class StateManager : MonoBehaviour
     {
         currentStateIndex = initialStateIndex;
     }
-
 
     // Update is called once per frame
     void Update()
