@@ -274,4 +274,28 @@ public class ObjectHandler : MonoBehaviour
 
         return neighbors;
     }
+
+    public GameObject GetWaypoint(NodeSystem.Node node)
+    {
+        for (int i = 0; i < m_waypoints.Count; i++)
+        {
+            if (((GameObject)m_waypoints[i]).GetComponent<waypoint_script>().Node == node)
+            {
+                return(GameObject)m_waypoints[i];
+            }
+        }
+        return null;
+    }
+
+    public GameObject GetConnection(NodeSystem.Line line)
+    {
+        for (int i = 0; i < m_connections.Count; i++)
+        {
+            if (((GameObject)m_connections[i]).GetComponent<connection_script>().Line == line)
+            {
+                return ((Connection)m_connections[i]).line;
+            }
+        }
+        return null;
+    }
 }

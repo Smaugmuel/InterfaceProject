@@ -1042,12 +1042,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 149433875}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!224 &159386859 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 22482932, guid: 69988eeaf22db50428892b9cf8812ad4,
-    type: 3}
-  m_PrefabInstance: {fileID: 1977770395}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &161730759
 GameObject:
   m_ObjectHideFlags: 0
@@ -1529,7 +1523,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 695962493}
   m_HandleRect: {fileID: 695962492}
   m_Direction: 2
-  m_Value: 0
+  //m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -5124,6 +5119,7 @@ MonoBehaviour:
   m_button2: {fileID: 1773717197}
   m_button3: {fileID: 201195656}
   m_button4: {fileID: 1750769590}
+  stateManagerObject: {fileID: 1950958865}
 --- !u!1 &679011573
 GameObject:
   m_ObjectHideFlags: 0
@@ -8850,7 +8846,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 359237344}
   m_Direction: 0
   m_Value: 0
-  m_Size: 0.9999997
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -15458,7 +15454,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4e5630e4a5fea347bc24260c0dee4dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radialMenuElements: {fileID: 159386859}
+  states:
+  - Node
+  - Line
+  - Path
 --- !u!4 &1950958866
 Transform:
   m_ObjectHideFlags: 0
