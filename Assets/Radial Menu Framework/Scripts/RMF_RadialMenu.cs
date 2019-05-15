@@ -129,9 +129,10 @@ public class RMF_RadialMenu : MonoBehaviour {
         //If your gamepad uses different horizontal and vertical joystick inputs, change them here!
         //==============================================================================================
         bool joystickMoved = Input.GetAxis("Horizontal") != 0.0 || Input.GetAxis("Vertical") != 0.0;
-            //==============================================================================================
+        //==============================================================================================
 
-
+        if (isVisible)
+        {
             float rawAngle;
 
             if (!useGamepad)
@@ -146,19 +147,23 @@ public class RMF_RadialMenu : MonoBehaviour {
                 currentAngle = normalizeAngle(-rawAngle + 90 - globalOffset + (angleOffset / 2f));
 
             //Handles lazy selection. Checks the current angle, matches it to the index of an element, and then highlights that element.
-            if (angleOffset != 0 && useLazySelection) {
+            if (angleOffset != 0 && useLazySelection)
+            {
 
                 //Current element index we're pointing at.
                 index = (int)(currentAngle / angleOffset);
 
-                if (elements[index] != null) {
+                if (elements[index] != null)
+                {
 
                     //Select it.
                     selectButton(index);
 
                     //If we click or press a "submit" button (Button on joystick, enter, or spacebar), then we'll execut the OnClick() function for the button.
-                    if (Input.GetMouseButtonDown(0) || Input.GetButtonDown("Submit")) {
-
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                       // Debug.Log("Pressed left click.");
+                        //print("button clicked= "+index);
                         ExecuteEvents.Execute(elements[index].button.gameObject, pointer, ExecuteEvents.submitHandler);
 
 
@@ -166,7 +171,6 @@ public class RMF_RadialMenu : MonoBehaviour {
                 }
 
             }
-
             //Updates the selection follower if we're using one.
             if (useSelectionFollower && selectionFollowerContainer != null) {
                 if (!useGamepad || joystickMoved)
@@ -174,6 +178,7 @@ public class RMF_RadialMenu : MonoBehaviour {
 
 
             }
+        }
     }
 
     //Selects the button with the specified index.

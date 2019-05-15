@@ -47,6 +47,11 @@ public class pickingHandler : MonoBehaviour
     public Camera camera_main;
     public Camera camera_side;
 
+
+    // Used by CameraMovement.cs
+    [HideInInspector]
+    public static Vector3 sideCameraLookAt = new Vector3();
+
     private void Start()
     {
         // Default start position is not reachable from the main camera.
@@ -463,10 +468,13 @@ public class pickingHandler : MonoBehaviour
         //cameraLookAt = lookAt;
 
         lookAt += placeOffset;
+        
         Vector3 dirFromOrigo = new Vector3(lookAt.x, 0f, lookAt.z).normalized * 6f;
 
         camera_side.transform.position = lookAt + dirFromOrigo + new Vector3(0, 3f, 0f);
         camera_side.transform.LookAt(lookAt);
+        
+        sideCameraLookAt = lookAt;
     }
 
     int GetPredictedIndex(RaycastHit[] hits)
