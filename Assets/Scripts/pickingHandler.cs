@@ -56,13 +56,12 @@ public class pickingHandler : MonoBehaviour
     public Camera camera_main;
     public Camera camera_side;
 
-    // DEBUG, 0 = waypoint, 1 = connection
-    [Range(0,1)]
-    public int DEBUG_STATE;
-
     // Used by CameraMovement.cs
     [HideInInspector]
     public static Vector3 sideCameraLookAt = new Vector3();
+
+    string lastState;
+    string currentState;
 
     private void Start()
     {
@@ -76,21 +75,31 @@ public class pickingHandler : MonoBehaviour
         standardColor = Color.blue;
         selectColor = Color.green;
         selectedNode = null;
+
+        lastState = "";
+        currentState = "";
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            ChangeState(1 - DEBUG_STATE);
-        }
+        //if (Input.GetKeyDown(KeyCode.S))
+        //{
+        //    ChangeState(1 - DEBUG_STATE);
+        //}
 
         if (!Input.GetKey("space")) 
         {
+            currentState = StateManager.Instance.CurrentState();
+
+            if (currentState != lastState)
+            {
+                NewState(currentState);
+            }
+
 //<<<<<<< HEAD
 //            if (Input.GetMouseButtonDown(0))
 //=======
-            // Check if mouse pos is MAIN VIEW or SIDE VIEW (exclude node list)
+// Check if mouse pos is MAIN VIEW or SIDE VIEW (exclude node list)
             Vector2 mousePos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
 
             cameraLookAt = mousePos;
@@ -124,7 +133,7 @@ public class pickingHandler : MonoBehaviour
                     Vector2 mouseWorldPoint2D = new Vector2(ray.origin.x, ray.origin.z); // Possible since ray direction is (0, -1, 0)
                     Vector2 lastPlaced2D = new Vector2(lastHitPos.x, lastHitPos.z);
 
-                    if (DEBUG_STATE == 0) // Waypoint state
+                    if (currentState == "Node") // Waypoint state
                     {
                         // New position
                         if (Vector2.Distance(mouseWorldPoint2D, lastPlaced2D) > 0.5f)
@@ -181,7 +190,7 @@ public class pickingHandler : MonoBehaviour
                             }
                         }
                     }
-                    else if (DEBUG_STATE == 1) // Connection state
+                    else if (currentState == "Line") // Connection state
                     {
                         // 1. Wait for two nodes to be selected
                         // 2. Spawn a connection between them
@@ -585,9 +594,9 @@ public class pickingHandler : MonoBehaviour
     //  Public access functions 
     ////
 
-    public void ChangeState(int state)
+    public void NewState(string state)
     {
-        DEBUG_STATE = state;
+        lastState = state;
         con_selectedCount = 0;
         lastPlaced = null;
     }
