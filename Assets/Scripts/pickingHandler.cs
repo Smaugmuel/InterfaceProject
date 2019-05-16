@@ -59,11 +59,12 @@ public class pickingHandler : MonoBehaviour
     // Used by CameraMovement.cs
     [HideInInspector]
     public static Vector3 sideCameraLookAt = new Vector3();
+    public static int currentConnectionType;
 
     string lastState;
     string currentState;
 
-    public int currentConnectionType;
+   
 
     private void Start()
     {

@@ -32,6 +32,11 @@ public class GameController : MonoBehaviour
         loadButtoin.SetActive(false);
     }
 
+    public void changeCurrentConnectionType(int type)
+    {
+        pickingHandler.currentConnectionType = type;
+    }
+
     // Start is called before the first frame update
     void Start()
     {

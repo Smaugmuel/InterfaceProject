@@ -124,7 +124,8 @@ public class ObjectHandler : MonoBehaviour
         // Add to node system
         obj.GetComponent<connection_script>().Line = gc.getNodeSystem().AddLine(
             start.GetComponent<waypoint_script>().Node,
-            end.GetComponent<waypoint_script>().Node);
+            end.GetComponent<waypoint_script>().Node,
+            type);
         nodePanel.UpdateUI();
     }
 
