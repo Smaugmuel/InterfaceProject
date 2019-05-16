@@ -231,7 +231,14 @@ public class PathFinding : MonoBehaviour
 
             for (int i = 0; i < m_selectedNodes.Count-1; i++)
             {
-                path.AddRange(CalulatePath(m_selectedNodes[i], m_selectedNodes[i+1], allowedTypes));
+                List<NodeSystem.Node> nodesToAdd = CalulatePath(m_selectedNodes[i], m_selectedNodes[i + 1], allowedTypes);
+                if(nodesToAdd == null)
+                {
+                    Clear();
+                    errorMessage.GetComponent<Animator>().SetTrigger("Show");
+                    return;
+                }
+                path.AddRange(nodesToAdd);
 
                 //Remove Duplications
                 if (i != m_selectedNodes.Count - 2)
@@ -304,9 +311,9 @@ public class PathFinding : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyUp(KeyCode.A))
-        {
-            CalulatePath(ns.Nodes[0], ns.Nodes[ns.Nodes.Count - 1]);
-        }
+        //if (Input.GetKeyUp(KeyCode.A))
+        //{
+        //    CalulatePath(ns.Nodes[0], ns.Nodes[ns.Nodes.Count - 1]);
+        //}
     }
 }
