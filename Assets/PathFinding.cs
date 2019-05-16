@@ -172,7 +172,11 @@ public class PathFinding : MonoBehaviour
     void Update()
     {
         if (StateManager.Instance.CurrentState() != "Path")
+        {
+            UnselectPath();
+            Clear();
             return;
+        }
 
         if (Input.GetKeyUp(KeyCode.Escape))
         {
