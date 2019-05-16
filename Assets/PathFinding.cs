@@ -21,6 +21,13 @@ public class PathFinding : MonoBehaviour
     List<GameObject> m_textMeshes = new List<GameObject>();
     List<GameObject> m_ghostCubes = new List<GameObject>();
 
+    public class CheckpointedPath
+    {
+        public List<NodeSystem.Node> fullPath;
+        public List<NodeSystem.Node> checkpoints;
+    }
+    List<CheckpointedPath> m_paths = new List<CheckpointedPath>();
+
     [SerializeField]
     Material originalMaterial;
 
@@ -128,6 +135,12 @@ public class PathFinding : MonoBehaviour
         return null;
     }
 
+    [HideInInspector]
+    public List<CheckpointedPath> GetPaths()
+    {
+        return m_paths;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -154,17 +167,37 @@ public class PathFinding : MonoBehaviour
         m_ghostCubes.Clear();
     }
 
-    void SelectPath(List<NodeSystem.Node> path)
+    CheckpointedPath SavePath(List<NodeSystem.Node> fullPath, List<NodeSystem.Node> checkPoints)
+    {
+        CheckpointedPath cpp = new CheckpointedPath();
+        cpp.fullPath = fullPath;
+        cpp.checkpoints = new List<NodeSystem.Node>(checkPoints);
+        m_paths.Add(cpp);
+
+        return cpp;
+    }
+
+    public void SelectPath(CheckpointedPath path)
     {
         UnselectPath();
+        Clear();
 
         for (int i = 0; i < 1/*path.Count - 1*/; i++)
         {
             GameObject ghostCube = Instantiate(ghostCubePrefab);
-            ghostCube.GetComponent<PathFindingCube>().path = path;
+            ghostCube.GetComponent<PathFindingCube>().path = path.fullPath;
             ghostCube.GetComponent<PathFindingCube>().setPathPos(i);
             ghostCube.GetComponent<PathFindingCube>().speed = 10;
             m_ghostCubes.Add(ghostCube);
+        }
+
+
+        for (int i = 0; i < path.checkpoints.Count; i++)
+        {
+            GameObject text = Instantiate(TextPrefab);
+            text.transform.position = new Vector3(path.checkpoints[i].X, path.checkpoints[i].Y, path.checkpoints[i].Z);
+            text.GetComponent<TextMesh>().text = "" + i;
+            m_textMeshes.Add(text);
         }
     }
 
@@ -178,12 +211,12 @@ public class PathFinding : MonoBehaviour
             return;
         }
 
-        if (Input.GetKeyUp(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             Clear();
         }
 
-        if (Input.GetKeyUp(KeyCode.Return))
+        if (Input.GetKeyDown(KeyCode.Return))
         {
             List<NodeSystem.Node> path = new List<NodeSystem.Node>();
             for(int i = 0; i < m_selectedNodes.Count-1; i++)
@@ -195,7 +228,8 @@ public class PathFinding : MonoBehaviour
                     path.RemoveAt(path.Count - 1);
             }
 
-            SelectPath(path);
+            CheckpointedPath cpp = SavePath(path, m_selectedNodes);
+            SelectPath(cpp);
             //Clear();
             m_selectedNodes.Clear();
             //Dictionary<NodeSystem.Node, int> nVisitsToNode = new Dictionary<NodeSystem.Node, int>();
@@ -213,7 +247,7 @@ public class PathFinding : MonoBehaviour
             //}
         }
 
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonDown(0))
         {
             if (m_selectedNodes.Count == 0 && m_textMeshes.Count > 0)
                 Clear();
@@ -261,7 +295,7 @@ public class PathFinding : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyUp(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.A))
         {
             CalulatePath(ns.Nodes[0], ns.Nodes[ns.Nodes.Count - 1]);
         }

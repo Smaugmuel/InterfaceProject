@@ -9,8 +9,10 @@ public class GameController : MonoBehaviour
 
     float nextUpdate = 1;
 
-    [SerializeField]
-    UI_nodePanel ui_nodePanel;
+    //[SerializeField]
+    //UI_nodePanel ui_nodePanel;
+    //[SerializeField]
+    //UI_pathPanel ui_pathPanel;
 
     [SerializeField]
     GameObject[] worldObjects;
