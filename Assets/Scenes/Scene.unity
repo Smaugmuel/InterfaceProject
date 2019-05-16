@@ -1154,6 +1154,7 @@ MonoBehaviour:
   ui_canvas: {fileID: 1828657551}
   camera_main: {fileID: 963194227}
   camera_side: {fileID: 1097161899}
+  currentConnectionType: 0
 --- !u!4 &162537930
 Transform:
   m_ObjectHideFlags: 0
@@ -1522,7 +1523,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 695962493}
   m_HandleRect: {fileID: 695962492}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -3015,7 +3016,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.0000065639615}
+  m_AnchoredPosition: {x: 0, y: -0.000027567148}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &284213829
@@ -4648,6 +4649,9 @@ MonoBehaviour:
     type: 3}
   gc: {fileID: 343655722}
   nodePanel: {fileID: 1919270214}
+  mat0: {fileID: 2100000, guid: 51f5a8c86378d8144a8371cd04d94e7c, type: 2}
+  mat1: {fileID: 2100000, guid: 1b97494fd475c5440ac10ad9d63ff765, type: 2}
+  mat2: {fileID: 2100000, guid: fb65a80aef4327e469dfc33908a03165, type: 2}
 --- !u!4 &628180927
 Transform:
   m_ObjectHideFlags: 0
@@ -8864,8 +8868,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 359237345}
   m_HandleRect: {fileID: 359237344}
   m_Direction: 0
-  m_Value: 1
-  m_Size: 0.99999964
+  m_Value: 0
+  m_Size: 0.9999997
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -15760,6 +15764,27 @@ PrefabInstance:
       propertyPath: m_Alpha
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 143072, guid: 69988eeaf22db50428892b9cf8812ad4, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11499586, guid: 69988eeaf22db50428892b9cf8812ad4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 11500000, guid: 28be0bf4ba9cc9348aa766d4d78a4a16,
+        type: 3}
+    - target: {fileID: 11499586, guid: 69988eeaf22db50428892b9cf8812ad4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 11499586, guid: 69988eeaf22db50428892b9cf8812ad4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11499586, guid: 69988eeaf22db50428892b9cf8812ad4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 11405222, guid: 69988eeaf22db50428892b9cf8812ad4, type: 3}
       propertyPath: useLazySelection
       value: 1
@@ -15770,10 +15795,6 @@ PrefabInstance:
       objectReference: {fileID: 48499817}
     - target: {fileID: 11405222, guid: 69988eeaf22db50428892b9cf8812ad4, type: 3}
       propertyPath: useSelectionFollower
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 143072, guid: 69988eeaf22db50428892b9cf8812ad4, type: 3}
-      propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 11406896, guid: 69988eeaf22db50428892b9cf8812ad4, type: 3}
@@ -15859,23 +15880,6 @@ PrefabInstance:
     - target: {fileID: 11485486, guid: 69988eeaf22db50428892b9cf8812ad4, type: 3}
       propertyPath: m_Text
       value: Adv
-      objectReference: {fileID: 0}
-    - target: {fileID: 11499586, guid: 69988eeaf22db50428892b9cf8812ad4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 11500000, guid: 28be0bf4ba9cc9348aa766d4d78a4a16,
-        type: 3}
-    - target: {fileID: 11499586, guid: 69988eeaf22db50428892b9cf8812ad4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 11499586, guid: 69988eeaf22db50428892b9cf8812ad4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 11499586, guid: 69988eeaf22db50428892b9cf8812ad4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 69988eeaf22db50428892b9cf8812ad4, type: 3}
