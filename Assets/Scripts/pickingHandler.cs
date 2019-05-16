@@ -363,7 +363,11 @@ public class pickingHandler : MonoBehaviour
         // In this implementation, ghosts only appears
         // on NEW waypoints. Here, the new waypoint only
         // has ONE connection.
-        lastPlaced = (GameObject)neighbors[0];
+        if (neighbors.Count > 0)
+        {
+            lastPlaced = (GameObject)neighbors[0];
+        }
+        
 
         oh.RemoveWaypoint(waypoint);
         SpawnGhost(pos);
@@ -598,6 +602,7 @@ public class pickingHandler : MonoBehaviour
     {
         lastState = state;
         con_selectedCount = 0;
+        ClearGhostList();
         lastPlaced = null;
     }
 
