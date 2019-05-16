@@ -371,6 +371,13 @@ public class pickingHandler : MonoBehaviour
         {
             lastPlaced = (GameObject)neighbors[0];
         }
+        else
+        {
+            // This avoid conneciton between ghost and connection,
+            // when alternative nodes appears directly after changing
+            // state to "node" again.
+            lastPlaced = null;
+        }
         
 
         oh.RemoveWaypoint(waypoint);
