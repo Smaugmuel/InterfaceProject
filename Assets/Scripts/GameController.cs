@@ -39,6 +39,11 @@ public class GameController : MonoBehaviour
     public void changeCurrentConnectionType(int type)
     {
         pickingHandler.currentConnectionType = type;
+
+        for (int i = 0; i < FindObjectOfType<PathFinding>().typeButtons.Length; i++)
+        {
+            FindObjectOfType<PathFinding>().typeButtons[i].button.GetComponentInChildren<RawImage>().enabled = (i == type);
+        }
     }
 
     // Start is called before the first frame update

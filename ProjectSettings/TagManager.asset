@@ -6,6 +6,8 @@ TagManager:
   tags:
   - ui_node_item
   - spawner
+  - ui_path_item
+  - marker
   layers:
   - Default
   - TransparentFX

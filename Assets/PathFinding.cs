@@ -17,12 +17,12 @@ public class PathFinding : MonoBehaviour
     GameObject errorMessage;
 
     [System.Serializable]
-    class TypeButton
+    public class TypeButton
     {
         [SerializeField]
-        Toggle toggle;
+        public Toggle toggle;
         [SerializeField]
-        Button button;
+        public Button button;
         public void ShowToggle(bool b)
         {
             toggle.gameObject.SetActive(b);
@@ -36,7 +36,7 @@ public class PathFinding : MonoBehaviour
     }
 
     [SerializeField]
-    TypeButton[] typeButtons;
+    public TypeButton[] typeButtons;
 
     NodeSystem ns;
     UI_pathPanel uiPathPanel;
