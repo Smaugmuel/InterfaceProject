@@ -35,6 +35,11 @@ public class GameController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        foreach (GameObject obj in worldObjects)
+        {
+            obj.SetActive(false);
+        }
+
         GUIHandler.Instance.SetActive(0,false);
         GUIHandler.Instance.SetActive(1,false);
         GUIHandler.Instance.SetActive(2,false);
