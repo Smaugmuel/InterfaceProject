@@ -1,12 +1,35 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-//public struct Connection
-//{
-//    public GameObject line;
-//    public GameObject startNode;
-//    public GameObject endNode;
-//}
+public struct Connection
+{
+    public GameObject line;
+    public GameObject startNode;
+    public GameObject endNode;
+
+    private int type;
+
+    // Changing type will change the material of the connection object.
+    // Therefor, the change will happen in a function where the variable itself
+    // is private.
+    public void SetType(int _type)
+    {
+        if (type < 0 || type > 2)
+        {
+            Debug.Log("Connection.SetType(" + _type + "): Invalid type");
+            return;
+        }
+        type = _type;
+        line.GetComponent<MeshRenderer>().material = Connection.materials[type];
+    }
+    public int GetType()
+    {
+        return type;
+    }
+
+
+    public static Material[] materials = new Material[3];
+}
 
 public class ObjectHandler : MonoBehaviour
 {
@@ -19,11 +42,17 @@ public class ObjectHandler : MonoBehaviour
     public GameController gc;
     public UI_nodePanel nodePanel;
 
+    public Material mat0;
+    public Material mat1;
+    public Material mat2;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        Connection.materials[0] = mat0;
+        Connection.materials[1] = mat1;
+        Connection.materials[2] = mat2;
     }
 
     // Update is called once per frame
@@ -62,7 +91,7 @@ public class ObjectHandler : MonoBehaviour
         return obj;
     }
 
-    public void AddConnection(GameObject start, GameObject end)
+    public void AddConnection(GameObject start, GameObject end, int type = 0)
     {
         Vector3 midPoint = (start.transform.position + end.transform.position) / 2f;
         Vector3 direction = end.transform.position - start.transform.position;
@@ -89,6 +118,7 @@ public class ObjectHandler : MonoBehaviour
         newCon.startNode = start;
         newCon.endNode = end;
         newCon.line = obj;
+        newCon.SetType(type);
         m_connections.Add(newCon);
 
         // Add to node system
@@ -131,6 +161,7 @@ public class ObjectHandler : MonoBehaviour
         newCon.startNode = start;
         newCon.endNode = end;
         newCon.line = obj;
+        newCon.SetType(line.Type);
         m_connections.Add(newCon);
 
         // Add to node system

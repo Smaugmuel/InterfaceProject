@@ -1497,6 +1497,7 @@ MonoBehaviour:
   ui_canvas: {fileID: 1828657551}
   camera_main: {fileID: 963194227}
   camera_side: {fileID: 1097161899}
+  currentConnectionType: 0
 --- !u!4 &162537930
 Transform:
   m_ObjectHideFlags: 0
@@ -3358,7 +3359,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.0000065639615}
+  m_AnchoredPosition: {x: 0, y: -0.000027567148}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &284213829
@@ -5153,6 +5154,9 @@ MonoBehaviour:
     type: 3}
   gc: {fileID: 343655722}
   nodePanel: {fileID: 1919270214}
+  mat0: {fileID: 2100000, guid: 51f5a8c86378d8144a8371cd04d94e7c, type: 2}
+  mat1: {fileID: 2100000, guid: 1b97494fd475c5440ac10ad9d63ff765, type: 2}
+  mat2: {fileID: 2100000, guid: fb65a80aef4327e469dfc33908a03165, type: 2}
 --- !u!4 &628180927
 Transform:
   m_ObjectHideFlags: 0
