@@ -196,10 +196,9 @@ public class pickingHandler : MonoBehaviour
                         // 2. Spawn a connection between them
 
                         // Check if a waypoint is hit
-                        LayerMask mask = LayerMask.GetMask("Waypoints");
                         RaycastHit hit;// = Physics.Raycast(ray, 1000f, mask);
 
-                        if (Physics.Raycast(ray, out hit, 1000f, mask))
+                        if (Physics.Raycast(ray, out hit, 1000f, LayerMask.GetMask("Waypoints")))
                         {
                             con_selectedNodes[con_selectedCount++] = hit.collider.gameObject;
                             hit.collider.gameObject.GetComponent<MeshRenderer>().material = material_highlight;
@@ -230,7 +229,7 @@ public class pickingHandler : MonoBehaviour
                     Ray ray = camera_side.ViewportPointToRay(localPos);
                     RaycastHit hit;
 
-                    if (Physics.Raycast(ray, out hit, 1000f))
+                    if (Physics.Raycast(ray, out hit, 1000f, LayerMask.GetMask("Waypoints")))
                     {
                         if (IsGhost(hit.collider.gameObject))
                         {
@@ -259,7 +258,7 @@ public class pickingHandler : MonoBehaviour
 
                         RaycastHit hit;
 
-                        if (Physics.Raycast(ray, out hit, 1000f))
+                        if (Physics.Raycast(ray, out hit, 1000f/*, LayerMask.GetMask("Waypoints")*/))
                         {
                             if (IsWaypoint(hit.collider.gameObject))
                             {
@@ -286,7 +285,7 @@ public class pickingHandler : MonoBehaviour
                         Ray ray = camera_side.ViewportPointToRay(localPos);
                         RaycastHit hit;
 
-                        if (Physics.Raycast(ray, out hit, 1000f))
+                        if (Physics.Raycast(ray, out hit, 1000f, LayerMask.GetMask("Waypoints")))
                         {
                             if (IsWaypoint(hit.collider.gameObject))
                             {
@@ -363,7 +362,11 @@ public class pickingHandler : MonoBehaviour
         // In this implementation, ghosts only appears
         // on NEW waypoints. Here, the new waypoint only
         // has ONE connection.
-        lastPlaced = (GameObject)neighbors[0];
+        if (neighbors.Count > 0)
+        {
+            lastPlaced = (GameObject)neighbors[0];
+        }
+        
 
         oh.RemoveWaypoint(waypoint);
         SpawnGhost(pos);
@@ -598,6 +601,7 @@ public class pickingHandler : MonoBehaviour
     {
         lastState = state;
         con_selectedCount = 0;
+        ClearGhostList();
         lastPlaced = null;
     }
 

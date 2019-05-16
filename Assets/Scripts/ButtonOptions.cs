@@ -35,8 +35,8 @@ public class ButtonOptions : MonoBehaviour
     {
         StateManager.Instance.SetState("Path");
         GUIHandler.Instance.SetActive(0, false);
-        GUIHandler.Instance.SetActive(1, false);
-        GUIHandler.Instance.SetActive(2, true);
+        GUIHandler.Instance.SetActive(1, true);
+        GUIHandler.Instance.SetActive(2, false);
         //Debug.Log("Clicked button 2");
     }
     void ClickButtonThree()
@@ -47,8 +47,8 @@ public class ButtonOptions : MonoBehaviour
     {
         StateManager.Instance.SetState("Line");
         GUIHandler.Instance.SetActive(0, false);
-        GUIHandler.Instance.SetActive(1, true);
-        GUIHandler.Instance.SetActive(2, false);
+        GUIHandler.Instance.SetActive(1, false);
+        GUIHandler.Instance.SetActive(2, true);
         //Debug.Log("Clicked button 4");
     }
 }

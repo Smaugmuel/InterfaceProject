@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
@@ -11,9 +12,37 @@ public class GameController : MonoBehaviour
     [SerializeField]
     UI_nodePanel ui_nodePanel;
 
+    [SerializeField]
+    GameObject[] worldObjects;
+
+    [SerializeField]
+    GameObject loadButtoin;
+
+    public void ShowWorld()
+    {
+        foreach(GameObject obj in worldObjects)
+        {
+            obj.SetActive(true);
+        }
+
+        GUIHandler.Instance.SetActive(0, true);    // Node panel
+        GUIHandler.Instance.SetActive(1, false);   // Path panel
+        GUIHandler.Instance.SetActive(2, false);   // Line panel
+        GUIHandler.Instance.SetActive(3, true);    // Side camera
+        GUIHandler.Instance.SetActive(4, true);    // Frustum triangle
+
+        loadButtoin.SetActive(false);
+    }
+
     // Start is called before the first frame update
     void Start()
     {
+        GUIHandler.Instance.SetActive(0, false);    // Node panel
+        GUIHandler.Instance.SetActive(1, false);    // Path panel
+        GUIHandler.Instance.SetActive(2, false);    // Line panel
+        GUIHandler.Instance.SetActive(3, false);    // Side camera
+        GUIHandler.Instance.SetActive(4, false);    // Frustum triangle
+
         try
         {
             NodeSystem.Test();
