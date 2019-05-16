@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-struct Connection
-{
-    public GameObject line;
-    public GameObject startNode;
-    public GameObject endNode;
-}
+//struct Connection
+//{
+//    public GameObject line;
+//    public GameObject startNode;
+//    public GameObject endNode;
+//}
 
 public class pickingHandler : MonoBehaviour
 {
@@ -63,6 +63,8 @@ public class pickingHandler : MonoBehaviour
     string lastState;
     string currentState;
 
+    public int currentConnectionType;
+
     private void Start()
     {
         // Default start position is not reachable from the main camera.
@@ -78,6 +80,8 @@ public class pickingHandler : MonoBehaviour
 
         lastState = "";
         currentState = "";
+
+        currentConnectionType = 0;
     }
 
     void Update()
@@ -206,7 +210,7 @@ public class pickingHandler : MonoBehaviour
                             if (con_selectedCount == 2)
                             {
                                 // Create connection and reset
-                                oh.AddConnection(con_selectedNodes[0], con_selectedNodes[1]);
+                                oh.AddConnection(con_selectedNodes[0], con_selectedNodes[1], currentConnectionType);
                                 ResetConnectionListener();
                             }
                         }
@@ -336,7 +340,7 @@ public class pickingHandler : MonoBehaviour
         //if (m_waypoints.Count > 1 && !lastPlacedRestart)
         if (oh.m_waypoints.Count > 1 && lastPlaced != null)
         {
-            oh.AddConnection(lastPlaced, obj);
+            oh.AddConnection(lastPlaced, obj, currentConnectionType);
         }
 
         lastPlaced = obj;
