@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
@@ -11,9 +12,33 @@ public class GameController : MonoBehaviour
     [SerializeField]
     UI_nodePanel ui_nodePanel;
 
+    [SerializeField]
+    GameObject[] worldObjects;
+
+    [SerializeField]
+    GameObject loadButtoin;
+
+    public void ShowWorld()
+    {
+        foreach(GameObject obj in worldObjects)
+        {
+            obj.SetActive(true);
+        }
+
+        GUIHandler.Instance.SetActive(0, true);
+        GUIHandler.Instance.SetActive(1, true);
+        GUIHandler.Instance.SetActive(2, true);
+
+        loadButtoin.SetActive(false);
+    }
+
     // Start is called before the first frame update
     void Start()
     {
+        GUIHandler.Instance.SetActive(0,false);
+        GUIHandler.Instance.SetActive(1,false);
+        GUIHandler.Instance.SetActive(2,false);
+
         try
         {
             NodeSystem.Test();
