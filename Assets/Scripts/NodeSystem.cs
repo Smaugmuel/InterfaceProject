@@ -68,13 +68,14 @@ public class NodeSystem
             z = _z;
         }
 
-        public List<Node> GetNeighbours()
+        public List<Node> GetNeighbours(List<int> allowedTypes = null)
         {
             List<Node> neighbours = new List<Node>();
 
             for (int i = 0; i < connections.Count; i++)
             {
-                neighbours.Add(connections[i].GetOther(this));
+                if(allowedTypes == null || allowedTypes.Contains(connections[i].Type))
+                    neighbours.Add(connections[i].GetOther(this));
                 //neighbours.Add(connections[i].Nodes[1]);
             }
 
