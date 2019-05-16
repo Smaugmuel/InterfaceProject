@@ -224,7 +224,7 @@ public class ObjectHandler : MonoBehaviour
             // Remove connection in node system
             gc.getNodeSystem().RemoveLine(toRemove.line.GetComponent<connection_script>().Line);
 
-            m_waypoints.Remove(toRemove);
+            m_connections.Remove(toRemove);
             Destroy(toRemove.line);
         }
     }
@@ -252,7 +252,7 @@ public class ObjectHandler : MonoBehaviour
             // Remove connection in node system
             gc.getNodeSystem().RemoveLine(toRemove.line.GetComponent<connection_script>().Line);
 
-            m_waypoints.Remove(toRemove);
+            m_connections.Remove(toRemove);
             Destroy(toRemove.line);
         }
     }

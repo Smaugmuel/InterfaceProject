@@ -258,11 +258,15 @@ public class pickingHandler : MonoBehaviour
 
                         RaycastHit hit;
 
-                        if (Physics.Raycast(ray, out hit, 1000f/*, LayerMask.GetMask("Waypoints")*/))
+                        if (Physics.Raycast(ray, out hit, 1000f/*, LayerMask.GetMask("Waypoints", "Connections")*/))
                         {
                             if (IsWaypoint(hit.collider.gameObject))
                             {
                                 EraseWaypoint(hit.collider.gameObject);
+                            }
+                            else if (IsConnection(hit.collider.gameObject))
+                            {
+                                oh.RemoveConnection(hit.collider.gameObject);
                             }
                             else
                             {
@@ -285,11 +289,15 @@ public class pickingHandler : MonoBehaviour
                         Ray ray = camera_side.ViewportPointToRay(localPos);
                         RaycastHit hit;
 
-                        if (Physics.Raycast(ray, out hit, 1000f, LayerMask.GetMask("Waypoints")))
+                        if (Physics.Raycast(ray, out hit, 1000f/*, LayerMask.GetMask("Waypoints")*/))
                         {
                             if (IsWaypoint(hit.collider.gameObject))
                             {
                                 EraseWaypoint(hit.collider.gameObject);
+                            }
+                            else if (IsConnection(hit.collider.gameObject))
+                            {
+                                oh.RemoveConnection(hit.collider.gameObject);
                             }
                             //hit.collider.GetComponent<MeshRenderer>().material.color = new Color(0f, 0f, 0f);
                         }
@@ -460,10 +468,17 @@ public class pickingHandler : MonoBehaviour
     }
 
     bool IsWaypoint(GameObject obj)
-    {   
+    {
         //if (m_waypoints.Contains(obj))
-            
+
         return oh.m_waypoints.Contains(obj);
+    }
+    bool IsConnection(GameObject obj)
+    {
+        //if (m_waypoints.Contains(obj))
+
+        //return oh.m_connections.Contains(obj);
+        return obj.layer == 10;
     }
 
     void ClearGhostFromList(GameObject ghost)
