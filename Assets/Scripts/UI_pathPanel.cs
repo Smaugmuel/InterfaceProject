@@ -45,6 +45,7 @@ public class UI_pathPanel : MonoBehaviour
     void Start()
     {
         pathFinding = gameController.GetComponent<PathFinding>();
+        pathFinding.SetPathPanel(this);
         UpdateUI();
     }
 
@@ -55,7 +56,7 @@ public class UI_pathPanel : MonoBehaviour
         if (nextUpdate <= 0)
         {
             UpdateUI();
-            nextUpdate = 5;
+            nextUpdate = 2;
         }
     }
 }

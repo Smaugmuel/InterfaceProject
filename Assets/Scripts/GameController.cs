@@ -36,6 +36,11 @@ public class GameController : MonoBehaviour
         loadButtoin.SetActive(false);
     }
 
+    public void changeCurrentConnectionType(int type)
+    {
+        pickingHandler.currentConnectionType = type;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -44,6 +49,11 @@ public class GameController : MonoBehaviour
         GUIHandler.Instance.SetActive(2, false);    // Line panel
         GUIHandler.Instance.SetActive(3, false);    // Side camera
         GUIHandler.Instance.SetActive(4, false);    // Frustum triangle
+
+        foreach (GameObject obj in worldObjects)
+        {
+            obj.SetActive(false);
+        }
 
         try
         {

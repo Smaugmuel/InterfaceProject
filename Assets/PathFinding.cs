@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PathFinding : MonoBehaviour
 {
@@ -12,7 +13,33 @@ public class PathFinding : MonoBehaviour
     [SerializeField]
     GameObject ghostCubePrefab;
 
+    [SerializeField]
+    GameObject errorMessage;
+
+    [System.Serializable]
+    class TypeButton
+    {
+        [SerializeField]
+        Toggle toggle;
+        [SerializeField]
+        Button button;
+        public void ShowToggle(bool b)
+        {
+            toggle.gameObject.SetActive(b);
+            button.gameObject.SetActive(!b);
+        }
+
+        public bool isToggleOn()
+        {
+            return toggle.isOn;
+        }
+    }
+
+    [SerializeField]
+    TypeButton[] typeButtons;
+
     NodeSystem ns;
+    UI_pathPanel uiPathPanel;
 
     //NodeSystem.Node[] selectedNodes = new NodeSystem.Node[2];
     //int nSelectedNodes = 0;
@@ -34,7 +61,7 @@ public class PathFinding : MonoBehaviour
     [SerializeField]
     LayerMask Waypoint_layermask;
 
-    List<NodeSystem.Node> CalulatePath(NodeSystem.Node start, NodeSystem.Node end)
+    List<NodeSystem.Node> CalulatePath(NodeSystem.Node start, NodeSystem.Node end, List<int> allowedTypes = null)
     {
         List<NodeSystem.Node> openSet = new List<NodeSystem.Node>();
         List<NodeSystem.Node> closedSet = new List<NodeSystem.Node>();
@@ -69,7 +96,7 @@ public class PathFinding : MonoBehaviour
             }
             else
             {
-                List<NodeSystem.Node> Neighbours = currentNode.GetNeighbours();
+                List<NodeSystem.Node> Neighbours = currentNode.GetNeighbours(allowedTypes);
                 //print("Neighbours: " + Neighbours.Count);
 
                 foreach (NodeSystem.Node n in Neighbours)
@@ -177,12 +204,17 @@ public class PathFinding : MonoBehaviour
         return cpp;
     }
 
+    public void SetPathPanel(UI_pathPanel uipp)
+    {
+        uiPathPanel = uipp;
+    }
+
     public void SelectPath(CheckpointedPath path)
     {
         UnselectPath();
         Clear();
 
-        for (int i = 0; i < 1/*path.Count - 1*/; i++)
+        for (int i = 0; i < 1/*max number of cubes*/ && i < path.fullPath.Count - 1 /*Upper cube limit(failsafe)*/; i++)
         {
             GameObject ghostCube = Instantiate(ghostCubePrefab);
             ghostCube.GetComponent<PathFindingCube>().path = path.fullPath;
@@ -196,7 +228,7 @@ public class PathFinding : MonoBehaviour
         {
             GameObject text = Instantiate(TextPrefab);
             text.transform.position = new Vector3(path.checkpoints[i].X, path.checkpoints[i].Y, path.checkpoints[i].Z);
-            text.GetComponent<TextMesh>().text = "" + i;
+            text.GetComponent<TextMesh>().text = "" + (i + 1);
             m_textMeshes.Add(text);
         }
     }
@@ -204,6 +236,11 @@ public class PathFinding : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        for (int i = 0; i < typeButtons.Length; i++)
+        {
+            typeButtons[i].ShowToggle(StateManager.Instance.CurrentState() == "Path");
+        }
+
         if (StateManager.Instance.CurrentState() != "Path")
         {
             UnselectPath();
@@ -218,10 +255,31 @@ public class PathFinding : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Return))
         {
-            List<NodeSystem.Node> path = new List<NodeSystem.Node>();
-            for(int i = 0; i < m_selectedNodes.Count-1; i++)
+            if(m_selectedNodes.Count < 2)
             {
-                path.AddRange(CalulatePath(m_selectedNodes[i], m_selectedNodes[i+1]));
+                errorMessage.GetComponent<Animator>().SetTrigger("Show");
+                return;
+            }
+
+            List<NodeSystem.Node> path = new List<NodeSystem.Node>();
+            List<int> allowedTypes = new List<int>();
+
+            for (int i = 0; i < typeButtons.Length; i++)
+            {
+                if (typeButtons[i].isToggleOn())
+                    allowedTypes.Add(i);
+            }
+
+            for (int i = 0; i < m_selectedNodes.Count-1; i++)
+            {
+                List<NodeSystem.Node> nodesToAdd = CalulatePath(m_selectedNodes[i], m_selectedNodes[i + 1], allowedTypes);
+                if(nodesToAdd == null)
+                {
+                    Clear();
+                    errorMessage.GetComponent<Animator>().SetTrigger("Show");
+                    return;
+                }
+                path.AddRange(nodesToAdd);
 
                 //Remove Duplications
                 if (i != m_selectedNodes.Count - 2)
@@ -230,6 +288,9 @@ public class PathFinding : MonoBehaviour
 
             CheckpointedPath cpp = SavePath(path, m_selectedNodes);
             SelectPath(cpp);
+
+            uiPathPanel.UpdateUI();
+
             //Clear();
             m_selectedNodes.Clear();
             //Dictionary<NodeSystem.Node, int> nVisitsToNode = new Dictionary<NodeSystem.Node, int>();
@@ -294,10 +355,10 @@ public class PathFinding : MonoBehaviour
                 print("No Hit");
             }
         }
-
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            CalulatePath(ns.Nodes[0], ns.Nodes[ns.Nodes.Count - 1]);
-        }
+        
+        //if (Input.GetKeyUp(KeyCode.A))
+        //{
+        //    CalulatePath(ns.Nodes[0], ns.Nodes[ns.Nodes.Count - 1]);
+        //}
     }
 }

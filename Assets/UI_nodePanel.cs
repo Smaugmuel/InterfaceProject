@@ -54,7 +54,7 @@ public class UI_nodePanel : MonoBehaviour
         if (nextUpdate <= 0)
         {
             UpdateUI();
-            nextUpdate = 5;
+            nextUpdate = 2;
         }
     }
 }
