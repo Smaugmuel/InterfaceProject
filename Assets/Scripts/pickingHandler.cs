@@ -339,7 +339,7 @@ public class pickingHandler : MonoBehaviour
 
         // Spawn connection between the two latest waypoints
         //if (m_waypoints.Count > 1 && !lastPlacedRestart)
-        if (oh.m_waypoints.Count > 1 && lastPlaced != null)
+        if (oh.m_waypoints.Count > 1 && lastPlaced != null && !Input.GetKey(KeyCode.LeftControl))
         {
             oh.AddConnection(lastPlaced, obj, currentConnectionType);
         }
