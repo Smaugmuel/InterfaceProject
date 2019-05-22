@@ -38,6 +38,9 @@ public class PathFinding : MonoBehaviour
     [SerializeField]
     public TypeButton[] typeButtons;
 
+    [SerializeField]
+    Button addTypeButton;
+
     NodeSystem ns;
     UI_pathPanel uiPathPanel;
 
@@ -238,12 +241,14 @@ public class PathFinding : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        bool isPathStateActive = StateManager.Instance.CurrentState() == "Path";
         for (int i = 0; i < typeButtons.Length; i++)
         {
-            typeButtons[i].ShowToggle(StateManager.Instance.CurrentState() == "Path");
+            typeButtons[i].ShowToggle(isPathStateActive);
         }
+        addTypeButton.gameObject.SetActive(!isPathStateActive);
 
-        if (StateManager.Instance.CurrentState() != "Path")
+        if (!isPathStateActive)
         {
             UnselectPath();
             Clear();
