@@ -111,8 +111,8 @@ public class RMF_RadialMenu : MonoBehaviour {
     // Update is called once per frame
     void Update() {
         float distance = Vector2.Distance(Input.mousePosition, new Vector2(transform.position.x, transform.position.y)) / ui_canvas.scaleFactor;
-        print("dist " + distance);
-        print("scale " + ui_canvas.scaleFactor);
+        //print("dist " + distance);
+        //print("scale " + ui_canvas.scaleFactor);
         if (Input.GetKeyDown("space"))
         {
             myCG.interactable=true;
