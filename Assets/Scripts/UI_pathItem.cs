@@ -14,6 +14,10 @@ public class UI_pathItem : MonoBehaviour
     PathFinding pathFinding;
     float nextUpdate = 0;
 
+    public List<int> m_allowedTypes;
+    [SerializeField]
+    RawImage[] type_indicator;
+
     public PathFinding.CheckpointedPath Path
     {
         get { return path; }
@@ -33,6 +37,17 @@ public class UI_pathItem : MonoBehaviour
     public void UpdateUI()
     {
         IDText.text = "ID: " + id;
+        for(int i = 0; i < type_indicator.Length; i++)
+        {
+            if (m_allowedTypes.Contains(i))
+            {
+                type_indicator[i].enabled = true;
+            }
+            else
+            {
+                type_indicator[i].enabled = false;
+            }
+        }
     }
 
     // Start is called before the first frame update

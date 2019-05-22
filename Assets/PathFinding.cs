@@ -52,6 +52,7 @@ public class PathFinding : MonoBehaviour
     {
         public List<NodeSystem.Node> fullPath;
         public List<NodeSystem.Node> checkpoints;
+        public List<int> allowedTypes;
     }
     List<CheckpointedPath> m_paths = new List<CheckpointedPath>();
 
@@ -194,11 +195,12 @@ public class PathFinding : MonoBehaviour
         m_ghostCubes.Clear();
     }
 
-    CheckpointedPath SavePath(List<NodeSystem.Node> fullPath, List<NodeSystem.Node> checkPoints)
+    CheckpointedPath SavePath(List<NodeSystem.Node> fullPath, List<NodeSystem.Node> checkPoints, List<int> allowedPaths)
     {
         CheckpointedPath cpp = new CheckpointedPath();
         cpp.fullPath = fullPath;
         cpp.checkpoints = new List<NodeSystem.Node>(checkPoints);
+        cpp.allowedTypes = new List<int>(allowedPaths);
         m_paths.Add(cpp);
 
         return cpp;
@@ -286,7 +288,7 @@ public class PathFinding : MonoBehaviour
                     path.RemoveAt(path.Count - 1);
             }
 
-            CheckpointedPath cpp = SavePath(path, m_selectedNodes);
+            CheckpointedPath cpp = SavePath(path, m_selectedNodes, allowedTypes);
             SelectPath(cpp);
 
             uiPathPanel.UpdateUI();

@@ -37,6 +37,7 @@ public class UI_pathPanel : MonoBehaviour
 
             item.GetComponent<UI_pathItem>().ID = i;
             item.GetComponent<UI_pathItem>().Path = paths[i];
+            item.GetComponent<UI_pathItem>().m_allowedTypes = paths[i].allowedTypes;
             item.GetComponent<UI_pathItem>().UpdateUI();
         }
     }
