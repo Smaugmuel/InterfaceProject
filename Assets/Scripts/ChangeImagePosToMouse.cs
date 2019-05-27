@@ -23,8 +23,8 @@ public class ChangeImagePosToMouse : MonoBehaviour
     void Update()
     {
         //transform.position = pos;
-        if (sideCamerPos != gameObjectB.transform.position)
-        {
+        //if (sideCamerPos != gameObjectB.transform.position)
+        //{
             Vector3 camPos = mainCamera.WorldToScreenPoint(gameObjectB.transform.position);
 
             Vector3 target = mainCamera.WorldToScreenPoint(pickingHandler.sideCameraLookAt);
@@ -39,7 +39,7 @@ public class ChangeImagePosToMouse : MonoBehaviour
             transform.position = camPos;//Input.mousePosition;
 
             sideCamerPos = gameObjectB.transform.position;
-        }
+        //}
 
 
         //Input.mousePosition

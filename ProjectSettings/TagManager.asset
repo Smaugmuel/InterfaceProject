@@ -8,6 +8,7 @@ TagManager:
   - spawner
   - ui_path_item
   - marker
+  - last_road_type_button
   layers:
   - Default
   - TransparentFX
